@@ -1,0 +1,24 @@
+{
+  "name": "blog-fs",
+  "version": "0.1.0",
+  "description": "A full-stack blogging web application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo Hello World!"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Emman-B/blog-fs.git"
+  },
+  "keywords": [
+    "blog",
+    "fullstack",
+    "javascript"
+  ],
+  "author": "Emmanuel Butor <https://github.com/Emman-B>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Emman-B/blog-fs/issues"
+  },
+  "homepage": "https://github.com/Emman-B/blog-fs#readme"
+}
