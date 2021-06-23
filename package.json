@@ -2,7 +2,6 @@
   "name": "blog-fs",
   "version": "0.1.0",
   "description": "A full-stack blogging web application.",
-  "main": "index.js",
   "scripts": {
     "test": "echo Hello World!"
   },
