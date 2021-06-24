@@ -2,7 +2,7 @@
 const app = require('./app');
 
 // port to listen on
-const PORT = 3000;
+const PORT = 3010;
 
 // listen on the specified port
 app.listen(PORT, () => {
