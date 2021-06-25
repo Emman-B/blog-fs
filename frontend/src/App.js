@@ -1,7 +1,7 @@
-// imports from other libraries
-import {Route, HashRouter} from 'react-router-dom';
+import {Route, HashRouter, Link} from 'react-router-dom';
 
-// imports
+// Routes
+import SignupRoute from './routes/SignupRoute';
 import LoginRoute from './routes/LoginRoute';
 
 function App() {
@@ -10,10 +10,21 @@ function App() {
   return (
     <HashRouter>
       <Route exact path='/'>
+        <div>navigation</div>
+        <div>
+          <Link to='/login'>to login</Link>
+        </div>
+        <div>
+          <Link to='/signup'>to signup</Link>
+        </div>
       </Route>
 
       <Route path='/login'>
         <LoginRoute />
+      </Route>
+
+      <Route path='/signup'>
+        <SignupRoute />
       </Route>
     </HashRouter>
   );
