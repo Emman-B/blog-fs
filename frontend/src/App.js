@@ -3,6 +3,7 @@ import {Route, HashRouter, Link} from 'react-router-dom';
 // Routes
 import SignupRoute from './routes/SignupRoute';
 import LoginRoute from './routes/LoginRoute';
+import PostBrief from './components/PostBrief';
 
 function App() {
 
@@ -17,6 +18,10 @@ function App() {
         <div>
           <Link to='/signup'>to signup</Link>
         </div>
+
+        <PostBrief />
+        <PostBrief />
+        <PostBrief />
       </Route>
 
       <Route path='/login'>
