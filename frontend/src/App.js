@@ -1,9 +1,21 @@
+// imports from other libraries
+import {Route, HashRouter} from 'react-router-dom';
+
+// imports
+import LoginRoute from './routes/LoginRoute';
 
 function App() {
+
+  // component return function
   return (
-    <div className='App'>
-      Hello World
-    </div>
+    <HashRouter>
+      <Route exact path='/'>
+      </Route>
+
+      <Route path='/login'>
+        <LoginRoute />
+      </Route>
+    </HashRouter>
   );
 }
 
