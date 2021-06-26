@@ -19,9 +19,9 @@ function App() {
           <Link to='/signup'>to signup</Link>
         </div>
 
-        <PostBrief />
-        <PostBrief />
-        <PostBrief />
+        <PostBrief postAuthor='John Doe'/>
+        <PostBrief postTitle='Blog Post Title' postDate={new Date(2018, 2, 18).toLocaleDateString()}/>
+        <PostBrief postContent='This is my first blog post!' postAuthor='Jane Doe' postDate={new Date(2014, 7, 19).toLocaleDateString()}/>
       </Route>
 
       <Route path='/login'>
