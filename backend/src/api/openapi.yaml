@@ -1,0 +1,58 @@
+# OpenAPI specification (basic structure based off this: https://swagger.io/docs/specification/basic-structure/)
+openapi: 3.0.0
+info:
+  title: blog-fs OpenAPI Specification
+  version: 0.1.0
+# Paths
+paths:
+  /:
+    get:
+      summary: Returns a hello world message.
+      responses:
+        '200':    # status code
+          description: A hello world string
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /blogposts:
+    get:
+      summary: Retrieves blog posts
+      responses:
+        '200':
+          description: The blog posts including content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlogPost'
+    
+
+# Components
+components:
+  schemas:
+    # Schema for a single blog post
+    BlogPost:
+      type: object
+      # list of required properties
+      required:
+        - author
+        - title
+        - publishDate
+        - updatedDate
+        - content
+
+      properties:
+        author:
+          type: string
+        title:
+          type: string
+        publishDate:
+          type: string
+          format: date
+        updatedDate:
+          type: string
+          format: date
+        content:
+          type: string
