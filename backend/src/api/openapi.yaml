@@ -20,13 +20,30 @@ paths:
       summary: Retrieves blog posts
       responses:
         '200':
-          description: The blog posts including content
+          description: All of the blog posts including content
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/BlogPost'
+    post:
+      summary: Creates a new blog post
+      requestBody:
+        description: This is the blog post that the client wants to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBlogPost'
+      responses:
+        '201':
+          description: The blog post has successfully been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogPost'
+              
     
 
 # Components
@@ -50,9 +67,21 @@ components:
           type: string
         publishDate:
           type: string
-          format: date
+          format: date-time
         updatedDate:
           type: string
-          format: date
+          format: date-time
+        content:
+          type: string
+    # Schema for creating a new blog post
+    NewBlogPost:
+      type: object
+      required:
+        - title
+        - content
+      
+      properties:
+        title:
+          type: string
         content:
           type: string

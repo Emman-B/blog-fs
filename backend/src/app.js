@@ -10,9 +10,16 @@ const fs = require('fs'); // used when loading the openapi spec
 const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading the api specification
 
 // blog post route code imported here
-const { getBlogPosts } = require('./blogposts');
+const { getBlogPosts, createBlogPost } = require('./blogposts');
 
 // == middleware == //
+/**
+ * This is needed so that request bodies can be
+ * parsed correctly (since they are provided using
+ * json)
+ */
+app.use(express.json());
+
 /**
  * Open API validator middleware setup 
  * (using documentation from the following: 
@@ -52,5 +59,6 @@ app.get('/', (req, res) => {
  * /blogposts path returns all blogposts
  */
 app.get('/blogposts', getBlogPosts);
+app.post('/blogposts', createBlogPost);
 
 module.exports = app;
