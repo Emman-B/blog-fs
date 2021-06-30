@@ -88,7 +88,36 @@ paths:
                 type: array
                 items:
                   type: string
-
+  
+  /users/login:
+    post:
+      # no security reason: user is trying to log into an existing account
+      security: []
+      summary: Log into an account
+      requestBody:
+        description: This is the user account information that the client is trying to log into
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      
+      responses:
+        '200':
+          description: client has successfully logged in
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        
+        '400':
+          description: bad email or password
               
     
 

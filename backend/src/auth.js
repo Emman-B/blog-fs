@@ -70,3 +70,36 @@ exports.createNewAccount = async (req, res) => {
   // if anything else goes on, just return a status code of 500 (but this should not be reached)
   res.status(500).send();
 };
+
+/**
+ * Login to an existing account using an email and password
+ * @param {import('express').Request} req client request containing an email and password
+ * @param {import('express').Response} res server response indicating success or failure
+ */
+exports.loginToAccount = async (req, res) => {
+  // get the email and password from the request body
+  const {email, password} = req.body;
+  // find the user that the client is trying to log into
+  const user = users.find((user) => user.email === email);
+
+  // if the user could not be found, return status code 400
+  if (user === undefined || user === null) {
+    res.status(400).send();
+    return;
+  }
+
+  // otherwise, compare passwords using bcrypt
+  try {
+    if (await bcrypt.compare(password, user.password)) {
+      res.status(200).send('Successfully logged in!');
+    }
+    // if password does not match, return 400
+    else {
+      res.status(400).send();
+    }
+  }
+  // if any errors come up, return status code 500
+  catch (error) {
+    res.status(500).send();
+  }
+};
