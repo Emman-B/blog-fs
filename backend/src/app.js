@@ -11,6 +11,7 @@ const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading t
 
 // blog post route code imported here
 const { getBlogPosts, createBlogPost } = require('./blogposts');
+const { createNewAccount } = require('./auth');
 
 // == middleware == //
 /**
@@ -60,5 +61,10 @@ app.get('/', (req, res) => {
  */
 app.get('/blogposts', getBlogPosts);
 app.post('/blogposts', createBlogPost);
+
+/**
+ * /users path deals with anything related to users
+ */
+app.post('/users/signup', createNewAccount);
 
 module.exports = app;

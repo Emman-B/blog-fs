@@ -1,4 +1,4 @@
-// dummy data
+// dummy data of blog posts
 const blogPosts = require('./dummy/posts.json');
 
 /**

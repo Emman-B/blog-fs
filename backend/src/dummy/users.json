@@ -2,16 +2,16 @@
     {
         "username": "johndoe",
         "email": "johndoe@example.com",
-        "password": ""
+        "password": "$2b$10$OUesvhrnM3kH4qVYNuY4QOSELhTFgRdgy63/kzlpUGj2/Idfsii2C"
     },
     {
         "username": "janedoe",
         "email": "janedoe@example.com",
-        "password": ""
+        "password": "$2b$10$nbARN2QvcMwOoEokYOOvI.XO/7qDSgrOJN36PwZQr/6V56IbuH/ei"
     },
     {
         "username": "irwinjones",
         "email": "irwinjones@example.com",
-        "password": ""
+        "password": "$2b$10$440PvzA8ugpDBcixZEnCl.HE.PpayjsOMLaW..jlUZcMaAydKIKIW"
     }
 ]

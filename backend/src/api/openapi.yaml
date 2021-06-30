@@ -47,6 +47,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BlogPost'
+
+  /users/signup:
+    post:
+      # no security reason: user is trying to make an account in the first place
+      security: []
+      summary: Creates a new user account
+      requestBody:
+        description: This is the new user account information provided by the client
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+      
+      responses:
+        '201':
+          description: A new user account has been made. Basic details are returned (username and email)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+        '400':
+          description: The password confirmation is incorrect
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '409':
+          description: There is an account with either an existing username or an existing email. The conflicting item(s) is shown below
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
               
     
 
@@ -95,6 +137,25 @@ components:
         title:
           type: string
         content:
+          type: string
+    # Schema for new user account
+    NewUser:
+      type: object
+      required:
+        - username
+        - email
+        - password
+        - passwordConfirmation
+      
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        passwordConfirmation:
           type: string
 
 # Apply security scheme to all endpoints
