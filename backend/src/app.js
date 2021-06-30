@@ -33,7 +33,7 @@ app.use(express.json());
  * )
  */
 // swagger UI in api-docs
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
+app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
 // installing openapi validation middleware
 app.use(
   OpenApiValidator.middleware({
@@ -55,7 +55,7 @@ app.use((err, req, res, next) => {
 /**
  * Default path currently just returns hello world
  */
-app.get('/', (req, res) => {
+app.get('/v1/', (req, res) => {
     res.send('Hello world!');
 });
 
@@ -63,16 +63,16 @@ app.get('/', (req, res) => {
  * /blogposts path deals with anything related to blog posts
  */
 // getting all blogposts
-app.get('/blogposts', getBlogPosts);
+app.get('/v1/blogposts', getBlogPosts);
 // creating a new blog post (needs authentication middleware)
-app.post('/blogposts', authenticateToken, createBlogPost);
+app.post('/v1/blogposts', authenticateToken, createBlogPost);
 
 /**
  * /users path deals with anything related to users
  */
 // creating a new account
-app.post('/users/signup', createNewAccount);
+app.post('/v1/users/signup', createNewAccount);
 // logging into an existing account
-app.post('/users/login', loginToAccount);
+app.post('/v1/users/login', loginToAccount);
 
 module.exports = app;
