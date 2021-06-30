@@ -7,6 +7,8 @@ info:
 paths:
   /:
     get:
+      # no security reason: hello world test endpoint does not need security
+      security: []
       summary: Returns a hello world message.
       responses:
         '200':    # status code
@@ -17,6 +19,8 @@ paths:
                 type: string
   /blogposts:
     get:
+      # no security reason: blog posts are available regardless of authentication (depending on blog post permissions)
+      security: []
       summary: Retrieves blog posts
       responses:
         '200':
@@ -48,6 +52,13 @@ paths:
 
 # Components
 components:
+  # Bearer Authentication Scheme (see: https://swagger.io/docs/specification/authentication/bearer-authentication/)
+  securitySchemes:
+    bearerAuth:         # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT   # optional, arbitrary value for documentation purposes
+
   schemas:
     # Schema for a single blog post
     BlogPost:
@@ -85,3 +96,7 @@ components:
           type: string
         content:
           type: string
+
+# Apply security scheme to all endpoints
+security:
+  - bearerAuth: []

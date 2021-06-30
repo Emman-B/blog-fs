@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Emman-B/blog-fs#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "express-openapi-validator": "^4.12.14",
     "js-yaml": "^4.1.0",
