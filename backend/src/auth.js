@@ -10,6 +10,9 @@ const users = require('./dummy/users.json');
 // for encrypting passwords
 const bcrypt = require('bcrypt');
 
+// for authentication
+const jwt = require('jsonwebtoken');
+
 /**
  * Creates a new account and stores its login info
  * @param {import('express').Request} req client request containing an email, username, password, and password confirmation
@@ -51,7 +54,7 @@ exports.createNewAccount = async (req, res) => {
 
   // otherwise, add the new user info to the array of users and return 201 with the base info
   console.warn('[createNewAccount] dummy data is being written into');
-  console.warn('[createNewAccount] password is being stored without encryption');
+  console.warn('[createNewAccount] password is being stored with some encryption');
   // encrypt the password before storing it into the array
   try {
     // hash and salt the password (10 salt rounds)
@@ -91,7 +94,14 @@ exports.loginToAccount = async (req, res) => {
   // otherwise, compare passwords using bcrypt
   try {
     if (await bcrypt.compare(password, user.password)) {
-      res.status(200).send('Successfully logged in!');
+      // sign the jwt using the access token secret
+      const accessToken = jwt.sign(
+        { email: email, user: user.username },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '30s' }
+      );
+      // provide the access token
+      res.status(200).json({accessToken: accessToken});
     }
     // if password does not match, return 400
     else {
@@ -103,3 +113,36 @@ exports.loginToAccount = async (req, res) => {
     res.status(500).send();
   }
 };
+
+/**
+ * Authenticate JWT middleware, updates the req.user property or sends an error status code.
+ * In other words, this middleware will look at the authorization header of the request
+ * and verifies if it is valid or invalid.
+ * (see: https://www.youtube.com/watch?v=mbsmsi7l3r4 @ 10:25)
+ * @param {import('express').Request} req the client request that will be modified for the next function
+ * @param {import('express').Response} res server response to indicate any failures that may occur
+ * @param {import('express').NextFunction} next next function to call after this one
+ */
+exports.authenticateToken = async (req, res, next) => {
+  // get the authorization header from the request
+  const authHeader = req.headers['authorization'];
+  // if the authHeader does not exist, then return and send a response code of 401 indicating a lack of authentication
+  if (authHeader === undefined || authHeader === null) {
+    return res.sendStatus(401);
+  }
+  // retrieve the token, which has the format 'BEARER <token>'
+  const token = authHeader.split(' ')[1];
+
+  // Verify the jsonwebtoken, also providing the access token secret
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    // if there is an error, return 403 indicating that the token is no longer valid
+    if (err) {
+      return res.sendStatus(403);
+    }
+
+    // if no error, set the user item of the request body as the user
+    req.user = user;
+    // and then call the next function
+    next();
+  });
+}

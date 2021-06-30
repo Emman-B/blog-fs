@@ -1,3 +1,6 @@
+// set up the dotenv configuration
+require('dotenv').config();
+
 // create an express application
 const express = require('express');
 const app = express(); // this is exported from this source file
@@ -11,7 +14,7 @@ const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading t
 
 // blog post route code imported here
 const { getBlogPosts, createBlogPost } = require('./blogposts');
-const { createNewAccount, loginToAccount } = require('./auth');
+const { createNewAccount, loginToAccount, authenticateToken } = require('./auth');
 
 // == middleware == //
 /**
@@ -57,10 +60,12 @@ app.get('/', (req, res) => {
 });
 
 /**
- * /blogposts path returns all blogposts
+ * /blogposts path deals with anything related to blog posts
  */
+// getting all blogposts
 app.get('/blogposts', getBlogPosts);
-app.post('/blogposts', createBlogPost);
+// creating a new blog post (needs authentication middleware)
+app.post('/blogposts', authenticateToken, createBlogPost);
 
 /**
  * /users path deals with anything related to users
