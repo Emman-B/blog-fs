@@ -32,7 +32,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/BlogPost'
     post:
-      security: []
       summary: Creates a new blog post
       requestBody:
         description: This is the blog post that the client wants to create
@@ -113,10 +112,9 @@ paths:
         '200':
           description: client has successfully logged in
           content:
-            # this will contain the JWT
-            application/json:
+            text/plain; charset=utf-8:
               schema:
-                type: object
+                type: string
         
         '400':
           description: bad email or password
@@ -125,12 +123,12 @@ paths:
 
 # Components
 components:
-  # Bearer Authentication Scheme (see: https://swagger.io/docs/specification/authentication/bearer-authentication/)
+  # Cookie Authentication Scheme (see: https://swagger.io/docs/specification/authentication/cookie-authentication/)
   securitySchemes:
-    bearerAuth:         # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT   # optional, arbitrary value for documentation purposes
+    cookieAuth:           # arbitrary name for the security scheme
+      type: apiKey
+      in: cookie
+      name: accessToken   # name of the cookie
 
   schemas:
     # Schema for a single blog post
@@ -191,4 +189,4 @@ components:
 
 # Apply security scheme to all endpoints
 security:
-  - bearerAuth: []
+  - cookieAuth: []

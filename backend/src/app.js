@@ -20,7 +20,7 @@ const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading t
 
 // blog post route code imported here
 const { getBlogPosts, createBlogPost } = require('./blogposts');
-const { createNewAccount, loginToAccount, authenticateToken, authenticateTokenCookie } = require('./auth');
+const { createNewAccount, loginToAccount, authenticateTokenCookie } = require('./auth');
 
 // == middleware == //
 /**
@@ -30,8 +30,18 @@ const { createNewAccount, loginToAccount, authenticateToken, authenticateTokenCo
  */
 app.use(express.json());
 
-app.use(cors({credentials: true, origin: true}));
+/**
+ * Enable cors for the front-end web application. There are two options needed:
+ *  - credentials: This needs to be true to allow sending cookies (Access-Control-Allow-Credentials)
+ *  - origin: This is the allowed origin(s) for cors. I'm using a regular expression here to match
+ *            the URL of the web application.
+ */
+app.use(cors({credentials: true, origin: new RegExp(process.env.WEB_APP_URL_REGEXP)}));
 
+/**
+ * This is middleware so that I can access cookies as needed. It specfically allows me
+ * to access cookies via the "cookies" property in the request body.
+ */
 app.use(cookieParser());
 
 /**

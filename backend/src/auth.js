@@ -94,19 +94,24 @@ exports.loginToAccount = async (req, res) => {
   // otherwise, compare passwords using bcrypt
   try {
     if (await bcrypt.compare(password, user.password)) {
+      // define an expiration time in seconds
+      const secondsUntilExpiration = 5;
       // sign the jwt using the access token secret
       const accessToken = jwt.sign(
         { email: email, user: user.username },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '5s' }
+        { expiresIn: `${secondsUntilExpiration}s` }
       );
-      // set the cookies
+
+      // set the cookies to contain the token (MAKE SURE THEY ARE HTTPONLY)
       res.cookie('accessToken', accessToken, {
-        maxAge: 1000 * 5, // 5 seconds
-        httpOnly: true
+        maxAge: 1000 * secondsUntilExpiration, // in milliseconds
+        httpOnly: true,
+        secure: true
       });
-      // provide the access token
-      res.status(200).json({accessToken: accessToken});
+
+      // indicate a successful login
+      res.status(200).send('Login success!');
     }
     // if password does not match, return 400
     else {
@@ -124,6 +129,7 @@ exports.loginToAccount = async (req, res) => {
  * In other words, this middleware will look at the authorization header of the request
  * and verifies if it is valid or invalid.
  * (see: https://www.youtube.com/watch?v=mbsmsi7l3r4 @ 10:25)
+ * @deprecated Use authenticateTokenCookie instead.
  * @param {import('express').Request} req the client request that will be modified for the next function
  * @param {import('express').Response} res server response to indicate any failures that may occur
  * @param {import('express').NextFunction} next next function to call after this one
@@ -153,24 +159,33 @@ exports.authenticateToken = async (req, res, next) => {
 }
 
 /**
- * 
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- * @param {import('express').NextFunction} next 
+ * This is middleware that verifies the token that is sent in the request.
+ * If either the cookie is invalid (maybe due to expiration) or the token is invalid
+ * (maybe due to expiration), this will return an error status code.
+ * @param {import('express').Request} req client request containing the token in its cookie
+ * @param {import('express').Response} res server response, which may send errors
+ * @param {import('express').NextFunction} next the next function to be called if everything is okay (since this is middleware)
  */
 exports.authenticateTokenCookie = async (req, res, next) => {
+  // retrieve the token from the request's cookies
   const accessToken = req.cookies['accessToken'];
+
+  // if the cookie is valid, meaning that the token has been retrieved from cookies, then verify the token
   if (accessToken) {
+    // verify the token here
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      // if there was an error, return the corresponding status code
       if (err) {
         return res.sendStatus(403);
       }
 
+      // if there was no error, run the next function while also setting the user property of the request
       req.user = user;
       next();
     });
   }
   else {
+    // if the cookie was invalid, then return this
     return res.sendStatus(401);
   }
 }
