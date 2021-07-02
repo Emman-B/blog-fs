@@ -98,7 +98,7 @@ exports.loginToAccount = async (req, res) => {
       const secondsUntilExpiration = 30;
       // sign the jwt using the access token secret
       const accessToken = jwt.sign(
-        { email: email, user: user.username },
+        { email: email, username: user.username },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: `${secondsUntilExpiration}s` }
       );
@@ -189,6 +189,16 @@ exports.authenticateTokenCookie = async (req, res, next) => {
     return res.sendStatus(401);
   }
 }
+
+/**
+ * This checks if the client is currently logged in, returning the logged in user's information
+ * if so.
+ * @param {import('express').Request} req client request for getting the current logged-in user's info
+ * @param {import('express').Response} res the current logged-in user's info
+ */
+exports.getLoggedInUserInfo = async (req, res) => {
+  res.status(200).json({username: req.user.username, email: req.user.email});
+};
 
 /**
  * Logs out the user.

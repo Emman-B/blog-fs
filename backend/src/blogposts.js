@@ -30,7 +30,7 @@ exports.createBlogPost = async (req, res) => {
 
   // otherwise, create the new blogpost with the title and content set
   const newBlogPost = {};
-  newBlogPost.author = 'Dummy_Author';
+  newBlogPost.author = req.user.username;
   newBlogPost.title = title;
   newBlogPost.publishDate = new Date().toISOString();
   newBlogPost.updatedDate = newBlogPost.publishDate;

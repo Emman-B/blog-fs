@@ -55,6 +55,22 @@ paths:
         '401':
           description: User may not be logged in
 
+  /v1/user:
+    get:
+      summary: Retrieves the logged-in user's public information (which can be used to check for log-in state)
+      tags:
+        - User Accounts
+      responses:
+        '200':
+          description: The base log in information of the current logged in user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        
+        '401':
+          description: User may not be logged in
+
   /v1/user/signup:
     post:
       # no security reason: user is trying to make an account in the first place
@@ -76,13 +92,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  username:
-                    type: string
-                  email:
-                    type: string
-                    format: email
+                $ref: '#/components/schemas/User'
         '400':
           description: The password confirmation is incorrect
           content:
@@ -194,6 +204,19 @@ components:
           type: string
         content:
           type: string
+    # Schema for user account info (nothing private/personal)
+    User:
+      type: object
+      required:
+        - username
+        - email
+      
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
     # Schema for new user account
     NewUser:
       type: object
