@@ -27,6 +27,7 @@ exports.createBlogPost = async (req, res) => {
   // if either are undefined, respond with status code 400
   if (title === undefined || content === undefined) {
     res.status(400).send();
+    return;
   }
 
   // otherwise, create the new blogpost with the title and content set

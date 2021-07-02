@@ -98,8 +98,13 @@ exports.loginToAccount = async (req, res) => {
       const accessToken = jwt.sign(
         { email: email, user: user.username },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '30s' }
+        { expiresIn: '5s' }
       );
+      // set the cookies
+      res.cookie('accessToken', accessToken, {
+        maxAge: 1000 * 5, // 5 seconds
+        httpOnly: true
+      });
       // provide the access token
       res.status(200).json({accessToken: accessToken});
     }
@@ -145,4 +150,27 @@ exports.authenticateToken = async (req, res, next) => {
     // and then call the next function
     next();
   });
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
+exports.authenticateTokenCookie = async (req, res, next) => {
+  const accessToken = req.cookies['accessToken'];
+  if (accessToken) {
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+
+      req.user = user;
+      next();
+    });
+  }
+  else {
+    return res.sendStatus(401);
+  }
 }

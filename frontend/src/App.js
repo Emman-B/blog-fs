@@ -1,4 +1,5 @@
 import {Route, HashRouter, Link} from 'react-router-dom';
+import axios from 'axios';
 
 // Routes
 import SignupRoute from './routes/SignupRoute';
@@ -30,6 +31,23 @@ function App() {
 
       <Route path='/signup'>
         <SignupRoute />
+      </Route>
+
+      <Route path='/testing'>
+        <button onClick={() => {
+          axios.post('http://localhost:3010/v1/users/login', {email: 'johndoe@example.com', password: 'password'}, {withCredentials: true}).then((response) => {
+            console.log(response);
+          }).catch((err) => {console.log(err)});
+          
+        }}>Log in as John Doe</button>
+
+        <button onClick={() => {
+          console.log('button clicked');
+          axios.post('http://localhost:3010/v1/blogposts', {title: 'a title', content: 'content of post'}, {withCredentials: true}).then((response) => {
+            console.log('response');
+            console.log(response);
+          }).catch((err) => {console.log(`Caught error: ${err}`)});
+        }}>Make Post</button>
       </Route>
     </HashRouter>
   );

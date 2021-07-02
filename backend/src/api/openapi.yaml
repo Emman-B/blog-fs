@@ -32,6 +32,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/BlogPost'
     post:
+      security: []
       summary: Creates a new blog post
       requestBody:
         description: This is the blog post that the client wants to create
