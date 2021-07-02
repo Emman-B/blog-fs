@@ -22,6 +22,8 @@ paths:
       # no security reason: blog posts are available regardless of authentication (depending on blog post permissions)
       security: []
       summary: Retrieves blog posts
+      tags:
+        - Blog Posts
       responses:
         '200':
           description: All of the blog posts including content
@@ -33,6 +35,8 @@ paths:
                   $ref: '#/components/schemas/BlogPost'
     post:
       summary: Creates a new blog post
+      tags:
+        - Blog Posts
       requestBody:
         description: This is the blog post that the client wants to create
         required: true
@@ -48,11 +52,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/BlogPost'
 
+        '401':
+          description: User may not be logged in
+
   /v1/users/signup:
     post:
       # no security reason: user is trying to make an account in the first place
       security: []
       summary: Creates a new user account
+      tags:
+        - User Accounts
       requestBody:
         description: This is the new user account information provided by the client
         required: true
@@ -94,6 +103,8 @@ paths:
       # no security reason: user is trying to log into an existing account
       security: []
       summary: Log into an account
+      tags:
+        - User Accounts
       requestBody:
         description: This is the user account information that the client is trying to log into
         required: true
@@ -112,24 +123,39 @@ paths:
         '200':
           description: client has successfully logged in
           content:
-            # this will contain the JWT
-            application/json:
+            text/plain; charset=utf-8:
               schema:
-                type: object
+                type: string
         
-        '400':
+        '401':
           description: bad email or password
+  
+  /v1/users/logout:
+    delete:
+      summary: If a user is logged-in, this will log a user out
+      tags:
+        - User Accounts
+      responses:
+        '200':
+          description: Log out is successful
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+
+        '401':
+          description: User may not be logged in
               
     
 
 # Components
 components:
-  # Bearer Authentication Scheme (see: https://swagger.io/docs/specification/authentication/bearer-authentication/)
+  # Cookie Authentication Scheme (see: https://swagger.io/docs/specification/authentication/cookie-authentication/)
   securitySchemes:
-    bearerAuth:         # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT   # optional, arbitrary value for documentation purposes
+    cookieAuth:           # arbitrary name for the security scheme
+      type: apiKey
+      in: cookie
+      name: accessToken   # name of the cookie
 
   schemas:
     # Schema for a single blog post
@@ -190,4 +216,4 @@ components:
 
 # Apply security scheme to all endpoints
 security:
-  - bearerAuth: []
+  - cookieAuth: []

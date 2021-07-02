@@ -19,14 +19,13 @@ exports.getBlogPosts = async (req, res) => {
  * @param {import('express').Response} res response identifying if the blog post was successfully created
  */
 exports.createBlogPost = async (req, res) => {
-  console.warn('[createBlogPost] No authentication is being done');
-
   // retrieve the title and content from the request body
   const {title, content} = req.body;
 
   // if either are undefined, respond with status code 400
   if (title === undefined || content === undefined) {
     res.status(400).send();
+    return;
   }
 
   // otherwise, create the new blogpost with the title and content set

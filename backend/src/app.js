@@ -5,6 +5,12 @@ require('dotenv').config();
 const express = require('express');
 const app = express(); // this is exported from this source file
 
+// get the cookie parser
+const cookieParser = require('cookie-parser');
+
+// get cors
+const cors = require('cors');
+
 // api validation setup
 const OpenApiValidator = require('express-openapi-validator'); // the openapi validator
 const swaggerUi = require('swagger-ui-express'); // the swagger ui for verifying the api
@@ -14,7 +20,7 @@ const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading t
 
 // blog post route code imported here
 const { getBlogPosts, createBlogPost } = require('./blogposts');
-const { createNewAccount, loginToAccount, authenticateToken } = require('./auth');
+const { createNewAccount, loginToAccount, authenticateTokenCookie, logoutAccount } = require('./auth');
 
 // == middleware == //
 /**
@@ -23,6 +29,20 @@ const { createNewAccount, loginToAccount, authenticateToken } = require('./auth'
  * json)
  */
 app.use(express.json());
+
+/**
+ * Enable cors for the front-end web application. There are two options needed:
+ *  - credentials: This needs to be true to allow sending cookies (Access-Control-Allow-Credentials)
+ *  - origin: This is the allowed origin(s) for cors. I'm using a regular expression here to match
+ *            the URL of the web application.
+ */
+app.use(cors({credentials: true, origin: new RegExp(process.env.WEB_APP_URL_REGEXP)}));
+
+/**
+ * This is middleware so that I can access cookies as needed. It specfically allows me
+ * to access cookies via the "cookies" property in the request body.
+ */
+app.use(cookieParser());
 
 /**
  * Open API validator middleware setup 
@@ -65,7 +85,7 @@ app.get('/v1/', (req, res) => {
 // getting all blogposts
 app.get('/v1/blogposts', getBlogPosts);
 // creating a new blog post (needs authentication middleware)
-app.post('/v1/blogposts', authenticateToken, createBlogPost);
+app.post('/v1/blogposts', authenticateTokenCookie, createBlogPost);
 
 /**
  * /users path deals with anything related to users
@@ -74,5 +94,7 @@ app.post('/v1/blogposts', authenticateToken, createBlogPost);
 app.post('/v1/users/signup', createNewAccount);
 // logging into an existing account
 app.post('/v1/users/login', loginToAccount);
+// log out of user
+app.delete('/v1/users/logout', authenticateTokenCookie, logoutAccount);
 
 module.exports = app;
