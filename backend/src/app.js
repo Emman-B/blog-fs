@@ -20,7 +20,7 @@ const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading t
 
 // blog post route code imported here
 const { getBlogPosts, createBlogPost } = require('./blogposts');
-const { createNewAccount, loginToAccount, authenticateTokenCookie } = require('./auth');
+const { createNewAccount, loginToAccount, authenticateTokenCookie, logoutAccount } = require('./auth');
 
 // == middleware == //
 /**
@@ -94,5 +94,7 @@ app.post('/v1/blogposts', authenticateTokenCookie, createBlogPost);
 app.post('/v1/users/signup', createNewAccount);
 // logging into an existing account
 app.post('/v1/users/login', loginToAccount);
+// log out of user
+app.delete('/v1/users/logout', authenticateTokenCookie, logoutAccount);
 
 module.exports = app;

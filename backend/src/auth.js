@@ -95,7 +95,7 @@ exports.loginToAccount = async (req, res) => {
   try {
     if (await bcrypt.compare(password, user.password)) {
       // define an expiration time in seconds
-      const secondsUntilExpiration = 5;
+      const secondsUntilExpiration = 30;
       // sign the jwt using the access token secret
       const accessToken = jwt.sign(
         { email: email, user: user.username },
@@ -189,3 +189,15 @@ exports.authenticateTokenCookie = async (req, res, next) => {
     return res.sendStatus(401);
   }
 }
+
+/**
+ * Logs out the user.
+ * @param {import('express').Request} req client request to log out of the account
+ * @param {import('express').Response} res server response indicating success of logout
+ */
+exports.logoutAccount = async (req, res) => {
+  // clear the cookie holding the token
+  res.clearCookie('accessToken');
+  // indicate success of logout
+  res.status(200).send('Logout successful!');
+};
