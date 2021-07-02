@@ -91,10 +91,10 @@ app.post('/v1/blogposts', authenticateTokenCookie, createBlogPost);
  * /users path deals with anything related to users
  */
 // creating a new account
-app.post('/v1/users/signup', createNewAccount);
+app.post('/v1/user/signup', createNewAccount);
 // logging into an existing account
-app.post('/v1/users/login', loginToAccount);
+app.post('/v1/user/login', loginToAccount);
 // log out of user
-app.delete('/v1/users/logout', authenticateTokenCookie, logoutAccount);
+app.delete('/v1/user/logout', authenticateTokenCookie, logoutAccount);
 
 module.exports = app;

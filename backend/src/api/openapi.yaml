@@ -55,7 +55,7 @@ paths:
         '401':
           description: User may not be logged in
 
-  /v1/users/signup:
+  /v1/user/signup:
     post:
       # no security reason: user is trying to make an account in the first place
       security: []
@@ -98,7 +98,7 @@ paths:
                 items:
                   type: string
   
-  /v1/users/login:
+  /v1/user/login:
     post:
       # no security reason: user is trying to log into an existing account
       security: []
@@ -130,7 +130,7 @@ paths:
         '401':
           description: bad email or password
   
-  /v1/users/logout:
+  /v1/user/logout:
     delete:
       summary: If a user is logged-in, this will log a user out
       tags:
