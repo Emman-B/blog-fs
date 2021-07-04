@@ -1,7 +1,14 @@
+import './PostBrief.css';
 import { useState } from "react";
 
+/**
+ * Provides a brief summary to a post
+ * @param {object} props object that contains post information
+ * @returns JSX
+ */
 function PostBrief(props) {
   // state to keep track of
+  // all of the post information is here with default values
   const [postTitle  /*, setPostTitle*/]   = useState((props.postTitle !== undefined)?props.postTitle:'Untitled');
   const [postAuthor /*, setPostAuthor*/]  = useState((props.postAuthor !== undefined)?props.postAuthor:'Anonymous');
   const [postDate   /*, setPostDate*/]    = useState((props.postDate !== undefined)?props.postDate:new Date().toLocaleDateString());
@@ -16,7 +23,7 @@ function PostBrief(props) {
     <div>
       <h3>{postTitle}</h3>
       <h4>{postAuthor}, {postDate}</h4>
-      <div>
+      <div className='post-content'>
         {postContent}
       </div>
     </div>

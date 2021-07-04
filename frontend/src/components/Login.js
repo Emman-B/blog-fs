@@ -1,5 +1,10 @@
 
-function Login() {
+/**
+ * Login component with inputs
+ * @param {object} props any information to pass down to component
+ * @returns JSX
+ */
+function Login(props) {
 
   // component return function
   return (
