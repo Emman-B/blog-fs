@@ -133,9 +133,11 @@ paths:
         '200':
           description: client has successfully logged in
           content:
-            text/plain; charset=utf-8:
+            application/json:
               schema:
-                type: string
+                oneOf:
+                  - $ref: '#/components/schemas/User' # user details
+                  - type: string # simple "you have logged in" message
         
         '401':
           description: bad email or password

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import PostBrief from '../components/PostBrief';
 import Divider from './Divider';
@@ -32,12 +32,12 @@ function PostBriefList(props) {
   // component return function
   return (
     <div>
-      {blogPosts.map((blogPost) => {
+      {blogPosts.map((blogPost, index) => {
         return (
-          <>
+          <React.Fragment key={`post_${index}`}>
             <PostBrief postAuthor={blogPost.author} postDate={new Date(blogPost.updatedDate).toLocaleString()} postTitle={blogPost.title} postContent={blogPost.content} />
             <Divider />
-          </>
+          </React.Fragment>
         );
       })}
     </div>

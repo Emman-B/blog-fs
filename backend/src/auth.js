@@ -111,7 +111,7 @@ exports.loginToAccount = async (req, res) => {
       });
 
       // indicate a successful login
-      res.status(200).send('Login success!');
+      res.status(200).json({email: user.email, username: user.username});
     }
     // if password does not match, return 400
     else {
