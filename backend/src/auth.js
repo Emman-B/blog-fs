@@ -75,15 +75,15 @@ exports.createNewAccount = async (req, res) => {
 };
 
 /**
- * Login to an existing account using an email and password
+ * Login to an existing account using an email or username and password
  * @param {import('express').Request} req client request containing an email and password
  * @param {import('express').Response} res server response indicating success or failure
  */
 exports.loginToAccount = async (req, res) => {
-  // get the email and password from the request body
-  const {email, password} = req.body;
+  // get the email or username and password from the request body
+  const {emailOrUsername, password} = req.body;
   // find the user that the client is trying to log into
-  const user = users.find((user) => user.email === email);
+  const user = users.find((user) => user.email === emailOrUsername || user.username === emailOrUsername);
 
   // if the user could not be found, return status code 400
   if (user === undefined || user === null) {
@@ -98,7 +98,7 @@ exports.loginToAccount = async (req, res) => {
       const secondsUntilExpiration = 30;
       // sign the jwt using the access token secret
       const accessToken = jwt.sign(
-        { email: email, username: user.username },
+        { email: user.email, username: user.username },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: `${secondsUntilExpiration}s` }
       );

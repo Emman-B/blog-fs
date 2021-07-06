@@ -4,12 +4,12 @@ import { useHistory } from 'react-router-dom';
 
 /**
  * makes the post request to log in. On success, the email and username are stored in localstorage
- * @param {import('react').MutableRefObject} emailRef ref to the email input
+ * @param {import('react').MutableRefObject} emailOrUsernameRef ref to the email or username input
  * @param {import('react').MutableRefObject} passwordRef ref to the password input
  * @param {*} history react router history
  */
-function postLoginDetails(emailRef, passwordRef, history) {
-  axios.post('http://localhost:3010/v1/user/login', {email: emailRef.current.value, password: passwordRef.current.value}, {withCredentials: true})
+function postLoginDetails(emailOrUsernameRef, passwordRef, history) {
+  axios.post('http://localhost:3010/v1/user/login', {emailOrUsername: emailOrUsernameRef.current.value, password: passwordRef.current.value}, {withCredentials: true})
   .then((response) => {
     console.log('log in successful!');
     // store login details
@@ -35,7 +35,7 @@ function Login(props) {
   const history = useHistory();
 
   // references to input
-  const emailRef = useRef('');
+  const emailOrUsernameRef = useRef('');
   const passwordRef = useRef('');
 
   // component return function
@@ -45,10 +45,10 @@ function Login(props) {
         Login
       </div>
 
-      {/* Email Input */}
+      {/* Email or Username Input */}
       <div>
-        <div>Email</div>
-        <input type='text' placeholder='Email' ref={emailRef}></input>
+        <div>Email or Username</div>
+        <input type='text' placeholder='Email or Username' ref={emailOrUsernameRef}></input>
       </div>
 
       {/* Password Input */}
@@ -58,7 +58,7 @@ function Login(props) {
       </div>
 
       {/* Login Button */}
-      <button onClick={() => { postLoginDetails(emailRef, passwordRef, history) }}>Log in</button>
+      <button onClick={() => { postLoginDetails(emailOrUsernameRef, passwordRef, history) }}>Log in</button>
     </div>
   );
 }

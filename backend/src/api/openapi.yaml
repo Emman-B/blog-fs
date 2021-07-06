@@ -123,9 +123,8 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                emailOrUsername:
                   type: string
-                  format: email
                 password:
                   type: string
       
