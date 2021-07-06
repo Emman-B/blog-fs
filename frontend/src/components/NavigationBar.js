@@ -1,6 +1,6 @@
 import './NavigationBar.css';
 import { useHistory } from 'react-router-dom';
-import { useAuthState  } from '../authentication/Authentication';
+import { doLogout, useAuthState  } from '../authentication/Authentication';
 
 /**
  * Navigation Bar with basic navigation buttons and the name of the web app
@@ -39,7 +39,7 @@ function NavigationBar(props) {
     <>
       <div id='navbar-greeting' className='navbar-item'>Hello {localStorage.getItem('username')}</div>
       <button className='navbar-item'>New Post</button>
-      <button className='navbar-item'>Log Out</button>
+      <button className='navbar-item' onClick={() => doLogout(history)}>Log Out</button>
     </>
   );
 

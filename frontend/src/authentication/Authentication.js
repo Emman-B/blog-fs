@@ -57,3 +57,24 @@ export function useAuthState() {
   // return the boolean
   return isLoggedIn;
 }
+
+/**
+ * Does a logout and then refreshes the page
+ * @param {*} history react router history object
+ */
+export function doLogout(history) {
+  axios.delete('http://localhost:3010/v1/user/logout', {withCredentials: true})
+    .then(() => {
+      // log out is successful, clear the local storage
+      localStorage.removeItem('email');
+      localStorage.removeItem('username');
+      history.go(0); // refresh the current page
+    })
+    .catch(() => {
+      // error, user may be already logged out (but nothing really happens)
+      // still, clear the local storage if possible
+      localStorage.removeItem('email');
+      localStorage.removeItem('username');
+      history.go(0); // refresh the current page
+    });
+}
