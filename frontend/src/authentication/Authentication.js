@@ -35,11 +35,11 @@ export async function checkLoginState() {
 /**
  * Hook to track authentication state. Use this whenever you need to render something
  * that depends on whether the user is logged in or not (i.e., Log In button vs Log Out button)
- * @returns boolean with state for the logged in user
+ * @returns boolean|null (boolean is result of whether user is logged in or not, null means that the result was not found yet)
  */
 export function useAuthState() {
-  // tracks login state
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // tracks login state (null means the user was not logged in)
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   // update login state
   useEffect(() => {

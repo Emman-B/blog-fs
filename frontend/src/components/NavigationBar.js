@@ -19,7 +19,7 @@ function NavigationBar(props) {
   // different components depending on login state
 
   // if user is logged out, show this
-  const NavBarLoggedOut = (
+  const NavbarRightLoggedOut = (
     <>
       <div>
         <button id='navbar-login' className='navbar-item' onClick={() => {
@@ -35,7 +35,7 @@ function NavigationBar(props) {
   );
 
   // if user is logged in, show this
-  const NavBarLoggedIn = (
+  const NavbarRightLoggedIn = (
     <>
       <div id='navbar-greeting' className='navbar-item'>Hello {localStorage.getItem('username')}</div>
       <button className='navbar-item'>New Post</button>
@@ -43,7 +43,16 @@ function NavigationBar(props) {
     </>
   );
 
-
+  // function to decide what component to render for the right side of navbar: user logged in, user logged out, or "loading"
+  //  (called in the component return function)
+  function decideRenderedNavbarRight() {
+    // case: user is logged in
+    if (isLoggedIn) return NavbarRightLoggedIn;
+    // case: user is not logged in
+    else if (isLoggedIn === false) return NavbarRightLoggedOut;
+    // case: isLoggedIn === null so display nothing
+    else return <></>;
+  }
 
 
   // component return function
@@ -54,11 +63,8 @@ function NavigationBar(props) {
         <input id='navbar-search' className='navbar-item' type='text' placeholder='Search...'></input>
       </div>
       <div id='navbar-right'>
-        {
-          (isLoggedIn)?
-          NavBarLoggedIn :
-          NavBarLoggedOut
-        }
+        {/* Navbar Right depends on the login state of the user */}
+        {decideRenderedNavbarRight()}
       </div>
     </div>
   );
