@@ -64,15 +64,10 @@ export function useAuthState() {
  */
 export function doLogout(history) {
   axios.delete('http://localhost:3010/v1/user/logout', {withCredentials: true})
-    .then(() => {
-      // log out is successful, clear the local storage
-      localStorage.removeItem('email');
-      localStorage.removeItem('username');
-      history.go(0); // refresh the current page
-    })
-    .catch(() => {
-      // error, user may be already logged out (but nothing really happens)
-      // still, clear the local storage if possible
+    .finally(() => {
+      // log out can either succeed or fail (failing mainly due to the user is already logged out).
+      // regardless, removing the information from local storage and refreshing the current page
+      //    are what needs to be done regardless of success/failure
       localStorage.removeItem('email');
       localStorage.removeItem('username');
       history.go(0); // refresh the current page
