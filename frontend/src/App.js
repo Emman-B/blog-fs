@@ -8,6 +8,7 @@ import ProtectedRoute from './authentication/ProtectedRoute';
 import HomeRoute from './routes/HomeRoute';
 import SignupRoute from './routes/SignupRoute';
 import LoginRoute from './routes/LoginRoute';
+import PostEditorRoute from './routes/PostEditorRoute';
 
 function App() {
 
@@ -28,6 +29,11 @@ function App() {
         <Route path='/signup'>
           <SignupRoute />
         </Route>
+
+        {/* Protected Route from editing posts */}
+        <ProtectedRoute path='/editor'>
+          <PostEditorRoute />
+        </ProtectedRoute>
 
       </Switch>
     </HashRouter>

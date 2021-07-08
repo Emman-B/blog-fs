@@ -37,8 +37,11 @@ function NavigationBar(props) {
   // if user is logged in, show this
   const NavbarRightLoggedIn = (
     <>
+      {/* Greet user */}
       <div id='navbar-greeting' className='navbar-item'>Hello {localStorage.getItem('username')}</div>
-      <button className='navbar-item'>New Post</button>
+      {/* New post should link to the editor route */}
+      <button className='navbar-item' onClick={() => history.push('/editor')}>New Post</button>
+      {/* Log Out button should run the logout function */}
       <button className='navbar-item' onClick={() => doLogout(history)}>Log Out</button>
     </>
   );
