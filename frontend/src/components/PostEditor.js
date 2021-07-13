@@ -80,7 +80,7 @@ export default function PostEditor(props) {
         placeholder='Post Title'
         // When any change occurs, save it into local storage
         onChange={(event) => localStorage.setItem('draftTitle', event.target.value)}
-        value={localStorage.getItem('draftTitle')}
+        defaultValue={localStorage.getItem('draftTitle')}
       />
       <ReactQuill 
         modules={{toolbar: toolbarOptions}} 
