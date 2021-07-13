@@ -36,14 +36,18 @@
 }
 
 button.navbar-item {
-    background-color: rgb(65, 65, 65);
+    background-color: hsl(0, 0%, 25%);
     color: white;
     border: none;
     padding: 0.5vh 2vw;
     border-radius: 5px;
 }
 button.navbar-item:hover {
-    background-color: rgb(125, 125, 125);
+    background-color: hsl(0, 0%, 50%);
+}
+
+button.navbar-item:active {
+    background-color: hsl(0, 0%, 70%);
 }
 
 #navbar-title {

@@ -20,13 +20,13 @@ function PostBrief(props) {
 
   // component return function
   return (
-    <div>
+    <article>
       <h3>{postTitle}</h3>
       <h4>{postAuthor}, {postDate}</h4>
       <div className='post-content'>
         {postContent}
       </div>
-    </div>
+    </article>
   );
 };
 
