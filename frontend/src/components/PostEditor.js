@@ -22,7 +22,6 @@ function postNewBlogPost(title, content, history) {
     cleanUpDraftData();
     // return to main home page
     history.push('/');
-    history.go(0);
   })
   .catch((error) => {
     console.error(error);
