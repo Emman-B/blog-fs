@@ -9,6 +9,10 @@ const blogPosts = require('./dummy/posts.json');
 exports.getBlogPosts = async (req, res) => {
   console.warn('[getBlogPosts] Dummy data is being read!');
 
+  // sort by date before providing the blogposts
+  blogPosts.sort((postA, postB) => {
+    return new Date(postB.updatedDate) - new Date(postA.updatedDate);
+  })
   // send the dummy data
   res.json(blogPosts);
 };

@@ -1,5 +1,6 @@
 import './PostBrief.css';
 import { useState } from "react";
+import DOMPurify from 'dompurify';
 
 /**
  * Provides a brief summary to a post
@@ -21,10 +22,11 @@ function PostBrief(props) {
   // component return function
   return (
     <article>
-      <h3>{postTitle}</h3>
+      {/* Renamed the class to fit what css looks like */}
+      <h1 className='post-title'>{postTitle}</h1>
       <h4>{postAuthor}, {postDate}</h4>
-      <div className='post-content'>
-        {postContent}
+      {/* Note that dangerouslySetInnerHtml is being used. Make sure to sanitize this before displaying */}
+      <div className='post-content' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(postContent)}}>
       </div>
     </article>
   );

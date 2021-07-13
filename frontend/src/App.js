@@ -1,6 +1,7 @@
 // Styles
 import './App.css';
 
+// Route-related imports
 import { Route, HashRouter, Switch } from 'react-router-dom';
 import ProtectedRoute from './authentication/ProtectedRoute';
 

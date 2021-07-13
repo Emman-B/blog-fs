@@ -40,7 +40,7 @@ function Login(props) {
 
   // component return function
   return (
-    <div>
+    <form>
       <div>
         Login
       </div>
@@ -58,8 +58,8 @@ function Login(props) {
       </div>
 
       {/* Login Button */}
-      <button onClick={() => { postLoginDetails(emailOrUsernameRef, passwordRef, history) }}>Log in</button>
-    </div>
+      <button type='submit' onClick={() => { postLoginDetails(emailOrUsernameRef, passwordRef, history) }}>Log in</button>
+    </form>
   );
 }
 

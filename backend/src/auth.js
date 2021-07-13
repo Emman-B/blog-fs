@@ -95,7 +95,7 @@ exports.loginToAccount = async (req, res) => {
   try {
     if (await bcrypt.compare(password, user.password)) {
       // define an expiration time in seconds
-      const secondsUntilExpiration = 30;
+      const secondsUntilExpiration = 300;
       // sign the jwt using the access token secret
       const accessToken = jwt.sign(
         { email: user.email, username: user.username },

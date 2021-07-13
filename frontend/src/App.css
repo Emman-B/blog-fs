@@ -5,3 +5,11 @@
 body {
     margin: 0;
 }
+
+/* These are for code blocks (depends on react-quill and how it writes code blocks) */
+pre, code {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: hsl(0, 0%, 20%);
+    width: fit-content;
+    color: hsl(0, 0%, 95%);
+}

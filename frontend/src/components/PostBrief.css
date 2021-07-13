@@ -1,9 +1,9 @@
 
+.post-title {
+    background-color: hsl(0, 0%, 80%);
+    padding: 10px;
+}
+
 .post-content {
-    /* The below four lines allow posts to be restricted to two lines */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    overflow: scroll;
 }
