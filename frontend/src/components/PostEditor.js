@@ -66,9 +66,13 @@ export default function PostEditor(props) {
           id='submit-button'
           type='submit'
           onClick={ () => {
-            postNewBlogPost(titleRef.current.value, DOMPurify.sanitize(editorRef.current.state.value), history)
+            // retrieve the unprivileged editor from the ref to retrieve the html
+            const editor = editorRef.current.getEditor();
+            const unprivilegedEditor = editorRef.current.makeUnprivilegedEditor(editor);
+            const sanitizedContent = DOMPurify.sanitize(unprivilegedEditor.getHTML());
+            // make the post request
+            postNewBlogPost(titleRef.current.value, sanitizedContent, history);
           }}>
-
             Post
         </button>
       </header>

@@ -5,5 +5,18 @@
 }
 
 .post-content {
+    /* Scroll for long content */
     overflow: scroll;
+    /* Long text should be wrapped ('pre' as in 'preformatted') */
+    white-space: pre-wrap;
+}
+
+.post:hover {
+    background-color: hsl(200, 40%, 90%);
+    color: hsl(200, 100%, 20%);
+}
+
+.post:active {
+    background-color: hsl(200, 40%, 95%);
+    color: hsl(200, 100%, 25%);
 }

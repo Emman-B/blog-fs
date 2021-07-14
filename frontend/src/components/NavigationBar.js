@@ -63,7 +63,9 @@ function NavigationBar(props) {
     <div id='navbar'>
       <div id='navbar-left'>
         <div id='navbar-title' className='navbar-item'>blog-fs</div>
-        <input id='navbar-search' className='navbar-item' type='text' placeholder='Search...'></input>
+
+        {/* Search bar (commented out until needed) */}
+        {/* <input id='navbar-search' className='navbar-item' type='text' placeholder='Search...'></input> */}
       </div>
       <div id='navbar-right'>
         {/* Navbar Right depends on the login state of the user */}

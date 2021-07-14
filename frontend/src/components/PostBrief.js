@@ -21,13 +21,14 @@ function PostBrief(props) {
 
   // component return function
   return (
-    <article>
-      {/* Renamed the class to fit what css looks like */}
-      <h1 className='post-title'>{postTitle}</h1>
-      <h4>{postAuthor}, {postDate}</h4>
+    <article className='post'>
+      {/* Title is wrapped in pre tags to prevent collapsing whitespace */}
+      <pre><h1 className='post-title'>{postTitle}</h1></pre>
+      <h4 className='post-author-date'>{postAuthor}, {postDate}</h4>
+
       {/* Note that dangerouslySetInnerHtml is being used. Make sure to sanitize this before displaying */}
-      <div className='post-content' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(postContent)}}>
-      </div>
+      <pre className='post-content' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(postContent)}}>
+      </pre>
     </article>
   );
 };

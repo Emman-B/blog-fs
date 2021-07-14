@@ -35,7 +35,7 @@ exports.createBlogPost = async (req, res) => {
   // otherwise, create the new blogpost with the title and content set
   const newBlogPost = {};
   newBlogPost.author = req.user.username;
-  newBlogPost.title = title;
+  newBlogPost.title = title?title:'Untitled Post'; // Untitled Post is a default name
   newBlogPost.publishDate = new Date().toISOString();
   newBlogPost.updatedDate = newBlogPost.publishDate;
   newBlogPost.content = content;
