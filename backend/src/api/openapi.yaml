@@ -174,17 +174,25 @@ components:
       type: object
       # list of required properties
       required:
+        - id
         - author
         - title
+        - permissions
         - publishDate
         - updatedDate
         - content
 
       properties:
+        id:
+          type: string
+          format: uuid
         author:
           type: string
         title:
           type: string
+        permissions:
+          type: string
+          example: 'public'
         publishDate:
           type: string
           format: date-time

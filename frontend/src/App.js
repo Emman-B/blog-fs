@@ -2,7 +2,7 @@
 import './App.css';
 
 // Route-related imports
-import { Route, HashRouter, Switch } from 'react-router-dom';
+import { Route, HashRouter, Switch, Redirect } from 'react-router-dom';
 import ProtectedRoute from './authentication/ProtectedRoute';
 
 // Routes
@@ -35,6 +35,10 @@ function App() {
         <ProtectedRoute path='/editor'>
           <PostEditorRoute />
         </ProtectedRoute>
+
+        <Route path='*'>
+          <Redirect to='/' />
+        </Route>
 
       </Switch>
     </HashRouter>

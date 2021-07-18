@@ -1,5 +1,6 @@
 [
     {
+        "id": "5c457b94-57de-4c59-968a-4b82824948d9",
         "author": "johndoe",
         "title": "About my day",
         "permissions": "public",
@@ -8,6 +9,7 @@
         "content": "<h2>Lorem ipsum dolor sit amet</h2>, consectetur adipiscing elit. Nam eleifend, ante ut euismod dignissim, nunc erat semper erat, quis semper neque tellus mattis enim. Vivamus et finibus ante, non eleifend tortor. Maecenas ut eros turpis. Maecenas dolor mi, fermentum sed dictum ac, imperdiet et turpis. Quisque sit amet scelerisque felis. In quis metus hendrerit, rutrum orci ut, aliquam turpis. Morbi eget leo efficitur, aliquet ipsum eget, finibus nibh. Vivamus porttitor convallis diam in tempus. Aliquam sagittis egestas sagittis. Etiam erat nulla, tempus eu est eu, semper rhoncus nisi. Fusce facilisis, arcu eu blandit egestas, lectus justo mattis libero, in pellentesque urna magna id enim. Nullam quis diam euismod nunc fermentum imperdiet eget non urna. Nullam quis dui arcu. In hac habitasse platea dictumst. Quisque eros sem, maximus non nibh quis, blandit dictum tortor. Curabitur quis dolor nec tortor rutrum commodo eget non metus."
     },
     {
+        "id": "e9f7e9ba-fe02-4af8-93bd-180e6c3347ff",
         "author": "johndoe",
         "title": "Another post about my day",
         "permissions": "public",
@@ -16,6 +18,7 @@
         "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus, orci id malesuada viverra, ante tortor eleifend sem, vitae molestie nisl velit a dolor. Quisque nec ex arcu. Duis id faucibus felis. Etiam tristique, felis in pharetra iaculis, dui justo aliquam libero, et bibendum ex mauris quis diam. Aliquam in orci est. Duis maximus mi nunc, id consequat lacus lobortis non. Fusce lacus metus, aliquet consectetur dolor ac, condimentum sagittis libero. Phasellus sodales vitae mauris eget placerat. Morbi tortor est, mollis sit amet enim quis, ornare porttitor magna. Quisque nec tempus felis. Nulla in facilisis nisi. Aliquam egestas tellus erat, ac porta enim placerat quis. Morbi ullamcorper quis enim congue tincidunt. Nunc eu tempor lectus, vel facilisis neque."
     },
     {
+        "id": "09946e2a-76d0-434e-833c-82beb45c526f",
         "author": "janedoe",
         "title": "Topics of conversation",
         "permissions": "public",

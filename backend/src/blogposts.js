@@ -1,3 +1,7 @@
+// sanitization module
+const sanitizeHtml = require('sanitize-html');
+// uuid module
+const { v4: uuidv4 } = require('uuid');
 // dummy data of blog posts
 const blogPosts = require('./dummy/posts.json');
 
@@ -34,11 +38,15 @@ exports.createBlogPost = async (req, res) => {
 
   // otherwise, create the new blogpost with the title and content set
   const newBlogPost = {};
+  // generate a new uuid
+  newBlogPost.id = uuidv4();
   newBlogPost.author = req.user.username;
   newBlogPost.title = title?title:'Untitled Post'; // Untitled Post is a default name
+  newBlogPost.permissions = 'public'; // Uses public for now, but will be something else when permissions are implemented
   newBlogPost.publishDate = new Date().toISOString();
   newBlogPost.updatedDate = newBlogPost.publishDate;
-  newBlogPost.content = content;
+  // sanitize the content received from the client
+  newBlogPost.content = sanitizeHtml(content);
 
   // add it to the blog post database
   console.warn('[createBlogPost] Dummy data is being written into');
