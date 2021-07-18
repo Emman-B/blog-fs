@@ -9,7 +9,8 @@ import { useRef } from 'react';
 import axios from 'axios';
 
 /**
- * This makes a POST request to the server. This also clears local storage of any drafts.
+ * This makes a POST request to the server to create a new blog post.
+ * This also clears local storage of any drafts.
  * @param {string} title Title of blog post
  * @param {string} content Content of blog post
  * @param {object} history Method of returning to main page after posting
@@ -69,6 +70,7 @@ export default function PostEditor(props) {
             // retrieve the unprivileged editor from the ref to retrieve the html
             const editor = editorRef.current.getEditor();
             const unprivilegedEditor = editorRef.current.makeUnprivilegedEditor(editor);
+            // retrieve the HTML from the editor and sanitize it
             const sanitizedContent = DOMPurify.sanitize(unprivilegedEditor.getHTML());
             // make the post request
             postNewBlogPost(titleRef.current.value, sanitizedContent, history);

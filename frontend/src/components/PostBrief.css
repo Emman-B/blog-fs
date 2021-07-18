@@ -5,10 +5,12 @@
 }
 
 .post-content {
-    /* Scroll for long content */
-    overflow: scroll;
-    /* Long text should be wrapped ('pre' as in 'preformatted') */
-    white-space: pre-wrap;
+    /* Limit line count with this: https://stackoverflow.com/questions/3922739/limit-text-length-to-n-lines-using-css */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-inline-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
 }
 
 .post:hover {

@@ -12,6 +12,9 @@ import Divider from './Divider';
 function getBlogPosts(url, setBlogPosts) {
   axios.get(url).then((response) => {
     setBlogPosts(response.data);
+  })
+  .catch((error) => {
+    console.error(error);
   });
 }
 
@@ -35,7 +38,12 @@ function PostBriefList(props) {
       {blogPosts.map((blogPost, index) => {
         return (
           <React.Fragment key={`post_${index}`}>
-            <PostBrief postAuthor={blogPost.author} postDate={new Date(blogPost.updatedDate).toLocaleString()} postTitle={blogPost.title} postContent={blogPost.content} />
+            <PostBrief 
+              postAuthor={blogPost.author}
+              postDate={new Date(blogPost.updatedDate).toLocaleString()}
+              postTitle={blogPost.title}
+              // this will be the full content, including HTML. PostBrief will handle sanitizing it and getting its text content.
+              postContent={blogPost.content} />
             <Divider />
           </React.Fragment>
         );

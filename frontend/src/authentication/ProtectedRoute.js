@@ -3,6 +3,7 @@
  * React Router documentation linked here: https://reactrouter.com/web/example/auth-workflow 
  */
 import { Route, Redirect } from 'react-router-dom';
+import { cleanUpDraftData } from '../components/PostEditor';
 import { useAuthState } from './Authentication';
 
 /**
@@ -41,6 +42,10 @@ export default function ProtectedRoute({redirectPathOnFail = '/', reversedProtec
         //  for checking for isLoggedIn === false is because isLoggedIn can possibly be null which
         //  indicates an unfulfilled promise.
         else if ((isLoggedIn === false && !reversedProtection) || (isLoggedIn === true && reversedProtection)) {
+          // Clean up any draft data (from editing a post)
+          cleanUpDraftData();
+
+          // do the redirect
           return (<Redirect to={{ pathname: redirectPathOnFail, state: {from: location} }} />);
         }
         // if isLoggedIn is null (only other possible value), render a component to indicate loading

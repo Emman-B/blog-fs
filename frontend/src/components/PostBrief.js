@@ -14,10 +14,21 @@ function PostBrief(props) {
   const [postAuthor /*, setPostAuthor*/]  = useState((props.postAuthor !== undefined)?props.postAuthor:'Anonymous');
   const [postDate   /*, setPostDate*/]    = useState((props.postDate !== undefined)?props.postDate:new Date().toLocaleDateString());
   const [postContent/*, setPostContent*/] = useState((props.postContent !== undefined)?props.postContent:
-    `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    `PLACEHOLDER Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     Nam augue nulla, lacinia fringilla gravida sit amet, scelerisque
     vel felis. Mauris vitae scelerisque ante. Aliquam erat volutpat.
     Donec hendrerit massa nec odio lobortis, eget tempor orci erat curae.`);
+
+  /**
+   * Takes content with HTML tags and retrieves just the inner text
+   * @param {string} content content with HTML tags
+   * @returns text content
+   */
+  const getTextContent = (content) => {
+    const tempEle = document.createElement('div');
+    tempEle.innerHTML = DOMPurify.sanitize(content);
+    return tempEle.innerText;
+  }
 
   // component return function
   return (
@@ -25,10 +36,10 @@ function PostBrief(props) {
       {/* Title is wrapped in pre tags to prevent collapsing whitespace */}
       <pre><h1 className='post-title'>{postTitle}</h1></pre>
       <h4 className='post-author-date'>{postAuthor}, {postDate}</h4>
-
-      {/* Note that dangerouslySetInnerHtml is being used. Make sure to sanitize this before displaying */}
-      <pre className='post-content' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(postContent)}}>
-      </pre>
+      {/* Display the content (sanitize just in case) */}
+      <div className='post-content'>
+        {DOMPurify.sanitize(getTextContent(postContent))}
+      </div>
     </article>
   );
 };
