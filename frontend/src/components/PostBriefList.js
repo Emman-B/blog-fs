@@ -28,7 +28,9 @@ function PostBriefList(props) {
   // all of the blog posts are here
   const [blogPosts, setBlogPosts] = useState([]);
 
+  // side effects for components
   useEffect(() => {
+    // gets all the blog posts
     getBlogPosts('http://localhost:3010/v1/blogposts', setBlogPosts);
   }, []);
 

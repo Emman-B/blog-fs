@@ -13,7 +13,7 @@ exports.getBlogPost = async (req, res) => {
   console.warn('[getBlogPosts] Dummy data is being read!');
 
   // find the blogpost with the corresponding ID
-  const blogPost = blogPosts.find((element) => element.id === req.params.id);
+  const blogPost = blogPosts.find((element) => element.id.toLowerCase() === req.params.id.toLowerCase());
 
   // if it was not found, return a 404 response
   if (blogPost == null) {

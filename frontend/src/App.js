@@ -10,6 +10,7 @@ import HomeRoute from './routes/HomeRoute';
 import SignupRoute from './routes/SignupRoute';
 import LoginRoute from './routes/LoginRoute';
 import PostEditorRoute from './routes/PostEditorRoute';
+import PostReaderRoute from './routes/PostReaderRoute';
 
 function App() {
 
@@ -35,6 +36,10 @@ function App() {
         <ProtectedRoute path='/editor'>
           <PostEditorRoute />
         </ProtectedRoute>
+
+        {/* Post Reader Route. It needs to use the component prop to get the prop parameter. */}
+        <Route path='/reader/:id' component={PostReaderRoute}>
+        </Route>
 
         <Route path='*'>
           <Redirect to='/' />
