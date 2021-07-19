@@ -54,6 +54,30 @@ paths:
 
         '401':
           description: User may not be logged in
+  /v1/blogposts/{id}:
+    get:
+      # no security reason: blog posts are available regardless of authentication (depending on blog post permissions)
+      security: []
+      parameters:
+        - in: path
+          name: id # ID of blog post
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: the UUID of the blogpost
+      summary: Retrieves 1 blog post by UUID
+      tags:
+        - Blog Posts
+      responses:
+        '200':
+          description: Blog post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogPost'
+        '404':
+          description: Blog post was not found
 
   /v1/user:
     get:

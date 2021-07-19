@@ -4,6 +4,27 @@ const sanitizeHtml = require('sanitize-html');
 const { v4: uuidv4 } = require('uuid');
 // dummy data of blog posts
 const blogPosts = require('./dummy/posts.json');
+/**
+ * Retrieves 1 blog post by uuid
+ * @param {import('express').Request} req client request
+ * @param {import('express').Response} res response which should return blog posts
+ */
+exports.getBlogPost = async (req, res) => {
+  console.warn('[getBlogPosts] Dummy data is being read!');
+
+  // find the blogpost with the corresponding ID
+  const blogPost = blogPosts.find((element) => element.id === req.params.id);
+
+  // if it was not found, return a 404 response
+  if (blogPost == null) {
+    res.status(404).send();
+    return;
+  }
+  
+  // if it was found, return it as the response
+  res.status(200).json(blogPost);
+  return;
+}
 
 /**
  * Retrieves blog posts

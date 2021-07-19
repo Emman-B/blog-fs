@@ -19,7 +19,7 @@ const fs = require('fs'); // used when loading the openapi spec
 const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading the api specification
 
 // blog post route code imported here
-const { getBlogPosts, createBlogPost } = require('./blogposts');
+const { getBlogPosts, createBlogPost, getBlogPost } = require('./blogposts');
 const { createNewAccount, loginToAccount, authenticateTokenCookie, logoutAccount, getLoggedInUserInfo } = require('./auth');
 
 // == middleware == //
@@ -84,11 +84,13 @@ app.get('/v1/', (req, res) => {
  */
 // getting all blogposts
 app.get('/v1/blogposts', getBlogPosts);
+// getting one blogpost by uuid
+app.get('/v1/blogposts/:id', getBlogPost);
 // creating a new blog post (needs authentication middleware)
 app.post('/v1/blogposts', authenticateTokenCookie, createBlogPost);
 
 /**
- * /users path deals with anything related to users
+ * /user path deals with anything related to users
  */
 // check the currently logged-in account
 app.get('/v1/user', authenticateTokenCookie, getLoggedInUserInfo);
