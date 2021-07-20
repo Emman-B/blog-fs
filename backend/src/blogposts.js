@@ -4,6 +4,40 @@ const sanitizeHtml = require('sanitize-html');
 const { v4: uuidv4 } = require('uuid');
 // dummy data of blog posts
 const blogPosts = require('./dummy/posts.json');
+
+
+// From sanitize-html, the options
+const sanitizeHtmlOptions = {
+  allowedTags: [
+    "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+    "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+    "dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
+    "ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+    "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+    "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+    "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr",
+
+    "img"
+  ],
+  disallowedTagsMode: 'discard',
+  allowedAttributes: {
+    a: [ 'href', 'name', 'target' ],
+    // We don't currently allow img itself by default, but this
+    // would make sense if we did. You could add srcset here,
+    // and if you do the URL is checked for safety
+    img: [ 'src' ],
+    '*': [ 'style', 'class' ],
+  },
+  // Lots of these won't come up by default because we don't allow them
+  selfClosing: [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ],
+  // URL schemes we permit
+  allowedSchemes: [ 'http', 'https', 'ftp', 'mailto', 'tel' ],
+  allowedSchemesByTag: {},
+  allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
+  allowProtocolRelative: true,
+  enforceHtmlBoundary: false
+}
+
 /**
  * Retrieves 1 blog post by uuid
  * @param {import('express').Request} req client request
@@ -67,7 +101,7 @@ exports.createBlogPost = async (req, res) => {
   newBlogPost.publishDate = new Date().toISOString();
   newBlogPost.updatedDate = newBlogPost.publishDate;
   // sanitize the content received from the client
-  newBlogPost.content = sanitizeHtml(content);
+  newBlogPost.content = sanitizeHtml(content, sanitizeHtmlOptions);
 
   // add it to the blog post database
   console.warn('[createBlogPost] Dummy data is being written into');

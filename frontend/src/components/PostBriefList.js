@@ -37,10 +37,11 @@ function PostBriefList(props) {
   // component return function
   return (
     <div>
-      {blogPosts.map((blogPost, index) => {
+      {blogPosts.map((blogPost) => {
         return (
-          <React.Fragment key={`post_${index}`}>
+          <React.Fragment key={blogPost.id}>
             <PostBrief 
+              postID={blogPost.id}
               postAuthor={blogPost.author}
               postDate={new Date(blogPost.updatedDate).toLocaleString()}
               postTitle={blogPost.title}

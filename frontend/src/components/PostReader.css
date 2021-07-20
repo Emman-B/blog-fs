@@ -1,0 +1,9 @@
+.post-reader-content blockquote {
+    background-color: hsl(0, 0%, 95%);
+    width: fit-content;
+
+    /* Left indent + border */
+    padding: 0.1em;
+    padding-left: 2em;
+    border-left: 0.25em solid hsl(0, 0%, 75%);
+}

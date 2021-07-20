@@ -1,3 +1,6 @@
+// styles
+import './PostReader.css';
+// modules
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -54,20 +57,30 @@ export default function PostReader(props) {
     <div>Loading</div>
   );
 
-  // PostReader load success component
+  // PostReader load success component function
+  /**
+   * takes the blog post and its properties and turns it into JSX
+   * @param {object} blogPost the blogpost object with data
+   * @returns JSX 
+   */
   const readerComponent = (blogPost) => (
     <>
-      <div>{blogPost.id}</div>
-      <div>{blogPost.author}</div>
-      <div>{blogPost.title}</div>
+      <pre><h1>{blogPost.title}</h1></pre>
+      <h4>{blogPost.author}</h4>
+      <h5>{blogPost.publishDate}</h5>
+      <h5>{blogPost.updatedDate}</h5>
       <div>{blogPost.permissions}</div>
-      <div>{blogPost.publishDate}</div>
-      <div>{blogPost.updatedDate}</div>
-      <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(blogPost.content)}}></div>
+      {/* Make sure to include the ql-snow and ql-editor classes for styling */}
+      <pre className='post-reader-content ql-snow ql-editor' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(blogPost.content)}}></pre>
     </>
   );
 
-  // PostReader load failure component
+  // PostReader load failure component function
+  /**
+   * takes the blog post and its error properties and turns it into JSX
+   * @param {object} blogPost the blogpost object with data about the error
+   * @returns JSX
+   */
   const failureComponent = (blogPost) => (
     <>
       <div>Error</div>
@@ -75,10 +88,25 @@ export default function PostReader(props) {
     </>
   );
 
+  /**
+   * Checks the blogPost.error property to see whether to
+   * render the failureComponent or the successComponent
+   * @returns JSX
+   */
+  const componentChooser = () => {
+    if (blogPost.error) {
+      return failureComponent(blogPost);
+    }
+    else {
+      return readerComponent(blogPost);
+    }
+  }
+
   // component return function
   return(
     <div>
-      {(blogPost === undefined)?loadingComponent:(!blogPost.error)?readerComponent(blogPost):failureComponent(blogPost)}
+      {/* If blogPost is undefined, the component has not loaded yet */}
+      {(blogPost === undefined)?loadingComponent:componentChooser()}
     </div>
   );
 }

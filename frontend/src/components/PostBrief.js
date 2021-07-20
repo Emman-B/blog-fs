@@ -1,5 +1,6 @@
 import './PostBrief.css';
 import { useState } from "react";
+import { useHistory } from 'react-router';
 import DOMPurify from 'dompurify';
 
 /**
@@ -10,6 +11,7 @@ import DOMPurify from 'dompurify';
 function PostBrief(props) {
   // state to keep track of
   // all of the post information is here with default values
+  const [postID/*, setPostID */]          = useState((props.postID !== undefined)?props.postID:'');
   const [postTitle  /*, setPostTitle*/]   = useState((props.postTitle !== undefined)?props.postTitle:'Untitled');
   const [postAuthor /*, setPostAuthor*/]  = useState((props.postAuthor !== undefined)?props.postAuthor:'Anonymous');
   const [postDate   /*, setPostDate*/]    = useState((props.postDate !== undefined)?props.postDate:new Date().toLocaleDateString());
@@ -18,6 +20,9 @@ function PostBrief(props) {
     Nam augue nulla, lacinia fringilla gravida sit amet, scelerisque
     vel felis. Mauris vitae scelerisque ante. Aliquam erat volutpat.
     Donec hendrerit massa nec odio lobortis, eget tempor orci erat curae.`);
+
+  // react router dom history hook for use in handling clicks
+  const history = useHistory();
 
   /**
    * Takes content with HTML tags and retrieves just the inner text
@@ -30,9 +35,16 @@ function PostBrief(props) {
     return tempEle.innerText;
   }
 
+  const handleClick = () => {
+    if (postID) {
+      // go to the reader route with the post
+      history.push(`/reader/${postID}`);
+    }
+  }
+
   // component return function
   return (
-    <article className='post'>
+    <article className='post' onClick={handleClick}>
       {/* Title is wrapped in pre tags to prevent collapsing whitespace */}
       <pre><h1 className='post-title'>{postTitle}</h1></pre>
       <h4 className='post-author-date'>{postAuthor}, {postDate}</h4>
