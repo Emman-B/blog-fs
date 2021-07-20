@@ -25,5 +25,32 @@
         "publishDate": "2016-05-22T04:32:34Z",
         "updatedDate": "2020-08-26T07:48:02Z",
         "content": "<h1>Lorem ipsum dolor sit amet</h1>, consectetur adipiscing elit. Cras consectetur, lectus ac ullamcorper tincidunt, quam mauris finibus nibh, ac gravida ligula dui sed quam. Donec placerat massa sit amet sollicitudin blandit. Maecenas pretium dapibus sollicitudin. Vivamus a risus sed turpis egestas facilisis eget at leo. Nam pulvinar ornare vehicula. Duis nulla magna, suscipit ac pellentesque eget, varius id erat. Morbi pellentesque massa at dui dignissim bibendum. Integer hendrerit mauris ac lobortis pellentesque. Curabitur fermentum dolor vitae nisi vulputate suscipit. Suspendisse dui libero, placerat sed tortor ac, faucibus ornare lorem."
+    },
+    {
+        "id": "2097889d-14d1-4836-802f-04b066e3eaea",
+        "author": "irwinjones",
+        "title": "Private post only available to me",
+        "permissions": "private",
+        "publishDate": "2018-04-21T01:46:39Z",
+        "updatedDate": "2019-07-29T01:46:39Z",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus, orci id malesuada viverra, ante tortor eleifend sem, vitae molestie nisl velit a dolor. Quisque nec ex arcu. Duis id faucibus felis. Etiam tristique, felis in pharetra iaculis, dui justo aliquam libero, et bibendum ex mauris quis diam. Aliquam in orci est. Duis maximus mi nunc, id consequat lacus lobortis non. Fusce lacus metus, aliquet consectetur dolor ac, condimentum sagittis libero. Phasellus sodales vitae mauris eget placerat. Morbi tortor est, mollis sit amet enim quis, ornare porttitor magna. Quisque nec tempus felis. Nulla in facilisis nisi. Aliquam egestas tellus erat, ac porta enim placerat quis. Morbi ullamcorper quis enim congue tincidunt. Nunc eu tempor lectus, vel facilisis neque."
+    },
+    {
+        "id": "4bbcf9a1-a675-45fe-b1b9-758d240cb6fe",
+        "author": "irwinjones",
+        "title": "Post available to all users",
+        "permissions": "users",
+        "publishDate": "2017-02-22T04:32:34Z",
+        "updatedDate": "2019-08-26T07:48:02Z",
+        "content": "<h1>Lorem ipsum dolor sit amet</h1>, consectetur adipiscing elit. Cras consectetur, lectus ac ullamcorper tincidunt, quam mauris finibus nibh, ac gravida ligula dui sed quam. Donec placerat massa sit amet sollicitudin blandit. Maecenas pretium dapibus sollicitudin. Vivamus a risus sed turpis egestas facilisis eget at leo. Nam pulvinar ornare vehicula. Duis nulla magna, suscipit ac pellentesque eget, varius id erat. Morbi pellentesque massa at dui dignissim bibendum. Integer hendrerit mauris ac lobortis pellentesque. Curabitur fermentum dolor vitae nisi vulputate suscipit. Suspendisse dui libero, placerat sed tortor ac, faucibus ornare lorem."
+    },
+    {
+        "id": "80982538-3219-45f4-8486-e0b4ec07d75b",
+        "author": "irwinjones",
+        "title": "Post available to those with a link",
+        "permissions": "unlisted",
+        "publishDate": "2017-02-22T04:32:34Z",
+        "updatedDate": "2019-08-26T07:48:02Z",
+        "content": "<h1>Lorem ipsum dolor sit amet</h1>, consectetur adipiscing elit. Cras consectetur, lectus ac ullamcorper tincidunt, quam mauris finibus nibh, ac gravida ligula dui sed quam. Donec placerat massa sit amet sollicitudin blandit. Maecenas pretium dapibus sollicitudin. Vivamus a risus sed turpis egestas facilisis eget at leo. Nam pulvinar ornare vehicula. Duis nulla magna, suscipit ac pellentesque eget, varius id erat. Morbi pellentesque massa at dui dignissim bibendum. Integer hendrerit mauris ac lobortis pellentesque. Curabitur fermentum dolor vitae nisi vulputate suscipit. Suspendisse dui libero, placerat sed tortor ac, faucibus ornare lorem."
     }
 ]

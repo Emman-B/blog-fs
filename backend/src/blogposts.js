@@ -39,8 +39,9 @@ const sanitizeHtmlOptions = {
 }
 
 /**
- * Retrieves 1 blog post by uuid
- * @param {import('express').Request} req client request
+ * Retrieves 1 blog post by uuid. Permissions setting of the blog post and the client's current authentication
+ * will affect whether the blogpost is sent to the client or not.
+ * @param {import('express').Request} req client request (req.user may be defined from middleware)
  * @param {import('express').Response} res response which should return blog posts
  */
 exports.getBlogPost = async (req, res) => {
@@ -55,14 +56,40 @@ exports.getBlogPost = async (req, res) => {
     return;
   }
   
-  // if it was found, return it as the response
+  // if it was found and it doesn't have the 'public'/'unlisted' permissions setting, permissions need to be handled
+  switch (blogPost.permissions) {
+    case 'private':
+      // check if the user is logged in and the username matches the author
+      if (req.user?.username !== blogPost.author) {
+        // if it doesn't, return a 404 (it should appear as if it was missing)
+        res.status(404).send();
+        return;
+      }
+      break;
+
+    case 'users':
+      // check if the user is just logged in
+      if (req.user === undefined) {
+        // if the user is not logged in, return a 401, indicating the need for authentication
+        res.status(401).send();
+        return;
+      }
+      break;
+
+    // if the permission is either public/unlisted, then nothing else needs to be done
+    default:
+      break;
+  }
+  
+  // if this point was reached, then we can send the blogpost
   res.status(200).json(blogPost);
   return;
 }
 
 /**
- * Retrieves blog posts
- * @param {import('express').Request} req client request
+ * Retrieves blog posts. The blog posts that are retrieved will depend on the authentication
+ * of the client.
+ * @param {import('express').Request} req client request (req.user may be defined from middleware)
  * @param {import('express').Response} res response which should return blog posts
  */
 exports.getBlogPosts = async (req, res) => {
@@ -72,8 +99,23 @@ exports.getBlogPosts = async (req, res) => {
   blogPosts.sort((postA, postB) => {
     return new Date(postB.updatedDate) - new Date(postA.updatedDate);
   })
+
+  // filter depending on permissions of blog posts
+  const sentBlogPosts = blogPosts.filter((blogPost) => {
+    switch (blogPost.permissions) {
+      case 'public': // public blogposts are available to all unauthenticated and authenticated users
+        return true;
+      case 'users': // users blogposts are available to all authenticated users
+        return req.user !== undefined;
+      case 'unlisted': // unlisted blogposts are available to all users with a link
+        return false;
+      case 'private': // private blogposts are available only to the author
+        return (req.user?.username === blogPost.author);
+    }
+  });
+
   // send the dummy data
-  res.json(blogPosts);
+  res.json(sentBlogPosts);
 };
 
 /**
@@ -82,8 +124,8 @@ exports.getBlogPosts = async (req, res) => {
  * @param {import('express').Response} res response identifying if the blog post was successfully created
  */
 exports.createBlogPost = async (req, res) => {
-  // retrieve the title and content from the request body
-  const {title, content} = req.body;
+  // retrieve the title, content, and permissions from the request body
+  const {title, content, permissions} = req.body;
 
   // if either are undefined, respond with status code 400
   if (title === undefined || content === undefined) {
@@ -97,7 +139,7 @@ exports.createBlogPost = async (req, res) => {
   newBlogPost.id = uuidv4();
   newBlogPost.author = req.user.username;
   newBlogPost.title = title?title:'Untitled Post'; // Untitled Post is a default name
-  newBlogPost.permissions = 'public'; // Uses public for now, but will be something else when permissions are implemented
+  newBlogPost.permissions = (permissions)?permissions:'public'; // public by default
   newBlogPost.publishDate = new Date().toISOString();
   newBlogPost.updatedDate = newBlogPost.publishDate;
   // sanitize the content received from the client

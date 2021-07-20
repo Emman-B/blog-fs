@@ -19,7 +19,8 @@ paths:
                 type: string
   /v1/blogposts:
     get:
-      # no security reason: blog posts are available regardless of authentication (depending on blog post permissions)
+      # no security reason: public blogposts are available without authentication
+      #   (some blogposts will need authentication though, but it's not a requirement of this route)
       security: []
       summary: Retrieves blog posts
       tags:
@@ -56,7 +57,8 @@ paths:
           description: User may not be logged in
   /v1/blogposts/{id}:
     get:
-      # no security reason: blog posts are available regardless of authentication (depending on blog post permissions)
+      # no security reason: public/unlisted blogposts are available with a link without authentication
+      #   (some blogposts will need authentication though, but it's not a requirement of this route)
       security: []
       parameters:
         - in: path
@@ -76,8 +78,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BlogPost'
+        '401':
+          description: Authentication is required
         '404':
-          description: Blog post was not found
+          description: Blog post was not found (can also be used for links to private blog posts)
 
   /v1/user:
     get:
@@ -237,6 +241,14 @@ components:
           type: string
         content:
           type: string
+        # Setting permissions
+        permissions:
+          type: string
+          anyOf:
+            - pattern: 'public'
+            - pattern: 'users'
+            - pattern: 'unlisted'
+            - pattern: 'private'
     # Schema for user account info (nothing private/personal)
     User:
       type: object

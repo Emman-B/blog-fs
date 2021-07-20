@@ -188,7 +188,43 @@ exports.authenticateTokenCookie = async (req, res, next) => {
     // if the cookie was invalid, then return this
     return res.sendStatus(401);
   }
-}
+};
+
+/**
+ * This is implemented similarly to authenticateTokenCookie except instead
+ * of the middleware interrupting the request, it still proceeds. This is used for any
+ * routes that do not require authentication, but being authenticated would change what data
+ * is delivered.
+ * @param {import('express').Request} req client request which could contain the token in its cookie
+ * @param {import('express').Response} res server response, which may send errors
+ * @param {import('express').NextFunction} next the next function to be called (since this is middleware)
+ */
+exports.checkTokenCookie = async (req, res, next) => {
+  // retrieve the token from the request's cookies
+  const accessToken = req.cookies['accessToken'];
+
+  // if the cookie is valid, meaning that the token has been retrieved from cookies, then verify the token
+  if (accessToken) {
+    // verify the token here
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      // if there was an error, just set req.user to be undefined and continue
+      if (err) {
+        req.user = undefined;
+        next();
+      }
+      else {
+        // if there was no error, run the next function while also setting the user property of the request
+        req.user = user;
+        next();
+      }
+    });
+  }
+  else {
+    // if the cookie was invalid, then set req.user to be undefined and run the next function
+    req.user = undefined;
+    next();
+  }
+};
 
 /**
  * This checks if the client is currently logged in, returning the logged in user's information
