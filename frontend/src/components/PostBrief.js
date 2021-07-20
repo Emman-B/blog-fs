@@ -15,6 +15,7 @@ function PostBrief(props) {
   const [postTitle  /*, setPostTitle*/]   = useState((props.postTitle !== undefined)?props.postTitle:'Untitled');
   const [postAuthor /*, setPostAuthor*/]  = useState((props.postAuthor !== undefined)?props.postAuthor:'Anonymous');
   const [postDate   /*, setPostDate*/]    = useState((props.postDate !== undefined)?props.postDate:new Date().toLocaleDateString());
+  const [postPermissions/* setPostPermissions*/] = useState((props.postPermissions !== undefined)?props.postPermissions:'public');
   const [postContent/*, setPostContent*/] = useState((props.postContent !== undefined)?props.postContent:
     `PLACEHOLDER Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     Nam augue nulla, lacinia fringilla gravida sit amet, scelerisque
@@ -35,6 +36,9 @@ function PostBrief(props) {
     return tempEle.innerText;
   }
 
+  /**
+   * handles when a post gets clicked
+   */
   const handleClick = () => {
     if (postID) {
       // go to the reader route with the post
@@ -42,12 +46,27 @@ function PostBrief(props) {
     }
   }
 
+  /**
+   * This checks if the postPermissions is unlisted. If it is, the appendedClassName will be
+   * returned, otherwise an empty string will be returned.
+   * @param {string} appendedClassName class name which will be used for appending the class for unlisted posts
+   * @returns string for appending
+   */
+  const appendUnlistedClass = (appendedClassName = '') => {
+    if (postPermissions === 'unlisted') {
+      return appendedClassName;
+    }
+    else {
+      return '';
+    }
+  }
+
   // component return function
   return (
-    <article className='post' onClick={handleClick}>
+    <article className={'post' + appendUnlistedClass(' post-unlisted')} onClick={handleClick}>
       {/* Title is wrapped in pre tags to prevent collapsing whitespace */}
       <pre><h1 className='post-title'>{postTitle}</h1></pre>
-      <h4 className='post-author-date'>{postAuthor}, {postDate}</h4>
+      <h4 className={'post-author-bar'}>{postAuthor}, {postDate}, {postPermissions}</h4>
       {/* Display the content (sanitize just in case) */}
       <div className='post-content'>
         {DOMPurify.sanitize(getTextContent(postContent))}

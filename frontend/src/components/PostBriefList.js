@@ -10,7 +10,7 @@ import Divider from './Divider';
  * @param {function} setBlogPosts sets the blog posts
  */
 function getBlogPosts(url, setBlogPosts) {
-  axios.get(url).then((response) => {
+  axios.get(url, { withCredentials: true }).then((response) => {
     setBlogPosts(response.data);
   })
   .catch((error) => {
@@ -45,6 +45,7 @@ function PostBriefList(props) {
               postAuthor={blogPost.author}
               postDate={new Date(blogPost.updatedDate).toLocaleString()}
               postTitle={blogPost.title}
+              postPermissions={blogPost.permissions}
               // this will be the full content, including HTML. PostBrief will handle sanitizing it and getting its text content.
               postContent={blogPost.content} />
             <Divider />

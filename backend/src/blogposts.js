@@ -107,8 +107,8 @@ exports.getBlogPosts = async (req, res) => {
         return true;
       case 'users': // users blogposts are available to all authenticated users
         return req.user !== undefined;
-      case 'unlisted': // unlisted blogposts are available to all users with a link
-        return false;
+      case 'unlisted': // unlisted blogposts can be shown in this route to the author only, but are otherwise available to everyone with a link
+        return (req.user?.username === blogPost.author);
       case 'private': // private blogposts are available only to the author
         return (req.user?.username === blogPost.author);
     }

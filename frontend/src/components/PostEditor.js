@@ -12,12 +12,13 @@ import axios from 'axios';
  * This makes a POST request to the server to create a new blog post.
  * This also clears local storage of any drafts.
  * @param {string} title Title of blog post
+ * @param {string} permissions Permissions of the blog post
  * @param {string} content Content of blog post
  * @param {object} history Method of returning to main page after posting
  */
-function postNewBlogPost(title, content, history) {
+function postNewBlogPost(title, permissions, content, history) {
   // make post request
-  axios.post('http://localhost:3010/v1/blogposts', {title: title, content: content}, {withCredentials: true})
+  axios.post('http://localhost:3010/v1/blogposts', {title: title, content: content, permissions: permissions}, {withCredentials: true})
   .then((response) => {
     // clear local storage of previous data
     cleanUpDraftData();
@@ -34,6 +35,8 @@ export default function PostEditor(props) {
   const titleRef = useRef('');
   // reference for editor
   const editorRef = useRef('');
+  // reference for the permissions
+  const permissionsRef = useRef('public');
   // react router history
   const history = useHistory();
 
@@ -63,20 +66,28 @@ export default function PostEditor(props) {
     <form>
       <header>
         <h4>New Post</h4>
-        <button
-          id='submit-button'
-          type='submit'
-          onClick={ () => {
-            // retrieve the unprivileged editor from the ref to retrieve the html
-            const editor = editorRef.current.getEditor();
-            const unprivilegedEditor = editorRef.current.makeUnprivilegedEditor(editor);
-            // retrieve the HTML from the editor and sanitize it
-            const sanitizedContent = DOMPurify.sanitize(unprivilegedEditor.getHTML());
-            // make the post request
-            postNewBlogPost(titleRef.current.value, sanitizedContent, history);
-          }}>
-            Post
-        </button>
+        <div>
+          <select ref={permissionsRef}>
+            <option value='public'>Public</option>
+            <option value='users'>Users</option>
+            <option value='unlisted'>Unlisted</option>
+            <option value='private'>Private</option>
+          </select>
+          <button
+            id='submit-button'
+            type='submit'
+            onClick={ () => {
+              // retrieve the unprivileged editor from the ref to retrieve the html
+              const editor = editorRef.current.getEditor();
+              const unprivilegedEditor = editorRef.current.makeUnprivilegedEditor(editor);
+              // retrieve the HTML from the editor and sanitize it
+              const sanitizedContent = DOMPurify.sanitize(unprivilegedEditor.getHTML());
+              // make the post request
+              postNewBlogPost(titleRef.current.value, permissionsRef.current.value, sanitizedContent, history);
+            }}>
+              Post
+          </button>
+        </div>
       </header>
 
       <input 

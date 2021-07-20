@@ -13,6 +13,15 @@
     -webkit-box-orient: vertical;
 }
 
+article.post-unlisted {
+    opacity: 0.2;
+    transition: opacity 0.5s;
+}
+
+article.post-unlisted:hover {
+    opacity: 1;
+}
+
 .post:hover {
     background-color: hsl(200, 40%, 90%);
     color: hsl(200, 100%, 20%);
