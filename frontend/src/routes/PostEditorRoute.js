@@ -16,8 +16,9 @@ export default function PostEditorRoute(props) {
   // used for setting the values for the post editor
   const [postData, setPostData] = useState(undefined);
 
+  // get the id parameter from the URL
   const params = useParams();
-  const postID = params.id;
+  const postID = params?.id;
   
   // Checks if the user can edit the post
   useEffect(() => {
@@ -59,17 +60,18 @@ export default function PostEditorRoute(props) {
     checkIfUserCanEditPost();
   }, [postID]);
 
-  // Conditional rendering: if allowEdit is null (i.e., loading), render nothing
+  // == Conditional Component Render Function
+  // Loading component
   if (allowEdit === null) {
     return (<></>);
   }
-  // Otherwise, if allowEdit is false (i.e., no permission, or bad UUID, redirect to main)
+  // Redirect to home if allowEdit is false (i.e., no permission, or bad UUID)
   else if (allowEdit === false) {
     return <Redirect to='/' />
   }
   else {
+    // Post Editor Component with the post data to load if needed
     return (
-      // Render the PostEditor.
       <PostEditor postData={postData} />
     );
   }

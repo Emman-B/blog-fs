@@ -139,7 +139,7 @@ exports.createBlogPost = async (req, res) => {
   newBlogPost.id = uuidv4();
   newBlogPost.author = req.user.username;
   newBlogPost.title = title?title:'Untitled Post'; // Untitled Post is a default name
-  newBlogPost.permissions = (permissions)?permissions:'public'; // public by default
+  newBlogPost.permissions = permissions?permissions:'public'; // public by default
   newBlogPost.publishDate = new Date().toISOString();
   newBlogPost.updatedDate = newBlogPost.publishDate;
   // sanitize the content received from the client
@@ -151,3 +151,45 @@ exports.createBlogPost = async (req, res) => {
 
   res.status(201).json(newBlogPost);
 };
+
+/**
+ * 
+ * @param {import('express').Request} req client request containing the updated blog post data
+ * @param {import('express').Response} res server response indicating update status
+ */
+exports.updateExistingBlogPost = async (req, res) => {
+  // get the UUID in the parameters
+  const {id} = req.params;
+
+  // Find the corresponding blog post in the database with the ID
+  console.warn('[updateExistingBlogPost] Reading dummy data');
+  const blogPostIndex = blogPosts.findIndex((blogPost) => blogPost.id === id);
+  
+  // If there is no blogpost, return a 404 status code
+  if (blogPostIndex === -1) {
+    res.status(404).send();
+    return;
+  }
+
+  // get the blogpost at the found index
+  const blogPost = blogPosts[blogPostIndex];
+
+  // If there is a blogpost, verify that the author is the same as the user (401 if not)
+  if (blogPost.author !== req.user.username) {
+    res.status(401).send();
+    return;
+  }
+
+  // At this stage, a blogPost with the correct ID and correct author has been found.
+  //  This item will be updated with the new information if they are not undefined, otherwise it will be omitted.
+  const {title, content, permissions} = req.body;
+  blogPost.title = (title !== undefined)?title:blogPost.title;
+  blogPost.content = (content !== undefined)?sanitizeHtml(content, sanitizeHtmlOptions):blogPost.content;
+  blogPost.permissions = (permissions !== undefined)?permissions:blogPost.permissions;
+  blogPost.updatedDate = new Date().toISOString(); // set the updated date to be now
+  // update the item in the database
+  console.warn('[createBlogPost] Dummy data is being written into');
+  blogPosts[blogPostIndex] = blogPost;
+  // send the updated blogpost in the response
+  res.status(200).json(blogPost);
+}

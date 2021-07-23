@@ -19,12 +19,12 @@ paths:
                 type: string
   /v1/blogposts:
     get:
+      tags:
+        - Blog Posts
       # no security reason: public blogposts are available without authentication
       #   (some blogposts will need authentication though, but it's not a requirement of this route)
       security: []
       summary: Retrieves blog posts
-      tags:
-        - Blog Posts
       responses:
         '200':
           description: All of the blog posts including content
@@ -35,9 +35,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/BlogPost'
     post:
-      summary: Creates a new blog post
       tags:
         - Blog Posts
+      summary: Creates a new blog post
       requestBody:
         description: This is the blog post that the client wants to create
         required: true
@@ -57,6 +57,8 @@ paths:
           description: User may not be logged in
   /v1/blogposts/{id}:
     get:
+      tags:
+        - Blog Posts
       # no security reason: public/unlisted blogposts are available with a link without authentication
       #   (some blogposts will need authentication though, but it's not a requirement of this route)
       security: []
@@ -69,8 +71,6 @@ paths:
             format: uuid
           description: the UUID of the blogpost
       summary: Retrieves 1 blog post by UUID
-      tags:
-        - Blog Posts
       responses:
         '200':
           description: Blog post
@@ -82,12 +82,46 @@ paths:
           description: Authentication is required
         '404':
           description: Blog post was not found (can also be used for links to private blog posts)
+    put:
+      tags:
+        - Blog Posts
+      # ID parameter for identifying the blogpost to update
+      parameters:
+        - in: path
+          name: id # ID of blog post
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: the UUID of blogpost to edit
+      # Request Body containing the updated properties
+      requestBody:
+        description: This is the blog post that the client wants to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedBlogPost'
+      summary: Updates an existing blogpost
+      
+      responses:
+        '200':
+          description: The blog post with the updated information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogPost'
+        '401':
+          description: Not authorized to update blog post (not the author)
+        '404':
+          description: Blog post was not found
+      
 
   /v1/user:
     get:
-      summary: Retrieves the logged-in user's public information (which can be used to check for log-in state)
       tags:
         - User Accounts
+      summary: Retrieves the logged-in user's public information (which can be used to check for log-in state)
       responses:
         '200':
           description: The base log in information of the current logged in user
@@ -101,11 +135,11 @@ paths:
 
   /v1/user/signup:
     post:
+      tags:
+        - User Accounts
       # no security reason: user is trying to make an account in the first place
       security: []
       summary: Creates a new user account
-      tags:
-        - User Accounts
       requestBody:
         description: This is the new user account information provided by the client
         required: true
@@ -138,11 +172,11 @@ paths:
   
   /v1/user/login:
     post:
+      tags:
+        - User Accounts
       # no security reason: user is trying to log into an existing account
       security: []
       summary: Log into an account
-      tags:
-        - User Accounts
       requestBody:
         description: This is the user account information that the client is trying to log into
         required: true
@@ -171,9 +205,9 @@ paths:
   
   /v1/user/logout:
     delete:
-      summary: If a user is logged-in, this will log a user out
       tags:
         - User Accounts
+      summary: If a user is logged-in, this will log a user out
       responses:
         '200':
           description: Log out is successful
@@ -242,6 +276,24 @@ components:
         - title
         - content
       
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        # Setting permissions
+        permissions:
+          type: string
+          anyOf:
+            - pattern: 'public'
+            - pattern: 'users'
+            - pattern: 'unlisted'
+            - pattern: 'private'
+            - pattern: 'draft'
+
+    # Schema for updating an existing blog post (like NewBlogPost but no required properties)
+    UpdatedBlogPost:
+      type: object
       properties:
         title:
           type: string

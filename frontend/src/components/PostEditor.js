@@ -8,6 +8,27 @@ import { Prompt, useHistory } from 'react-router-dom';
 import { useRef, useState } from 'react';
 import axios from 'axios';
 
+// options for react quill toolbar
+const toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  [{ 'direction': 'rtl' }],                         // text direction
+
+  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+  [{ 'font': [] }],
+  [{ 'align': [] }],
+
+  ['clean']                                         // remove formatting button
+];
+
 /**
  * This makes a POST request to the server to create a new blog post.
  * This also clears local storage of any drafts.
@@ -46,26 +67,7 @@ export default function PostEditor(props) {
   // react router history
   const history = useHistory();
 
-  // options for react quill toolbar
-  const toolbarOptions = [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
-  
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction
-  
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
-  
-    ['clean']                                         // remove formatting button
-  ];
+
   // get the current post ID
   // const postID = props.id;
 
@@ -80,10 +82,12 @@ export default function PostEditor(props) {
   return(
     // On any input in the form, set the dirty flag to true
     <form onInput={() => setIsDirty(true)}>
+      {/* Prompt user if they are leaving after modifying the form */}
       <Prompt
         when={isDirty && !isSubmitting}
         message={(location, action) => `Are you sure you want to leave? A draft will be saved. Location '${location} Action: ${action}'`}
       />
+
       <header>
         <h4>New Post</h4>
         <div>
@@ -102,6 +106,7 @@ export default function PostEditor(props) {
         </div>
       </header>
 
+      {/* Post Title Input */}
       <input 
         type='text'
         placeholder='Post Title'
@@ -109,6 +114,7 @@ export default function PostEditor(props) {
         onChange={(event) => setPostTitle(event.target.value)}
         defaultValue={postTitle}
       />
+      {/* Post Content Editor */}
       <ReactQuill 
         modules={{toolbar: toolbarOptions}}
         // When any change occurs, save it into local storage
