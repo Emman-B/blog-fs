@@ -221,6 +221,12 @@ components:
         permissions:
           type: string
           example: 'public'
+          anyOf:
+            - pattern: 'public'
+            - pattern: 'users'
+            - pattern: 'unlisted'
+            - pattern: 'private'
+            - pattern: 'draft'
         publishDate:
           type: string
           format: date-time
@@ -249,6 +255,7 @@ components:
             - pattern: 'users'
             - pattern: 'unlisted'
             - pattern: 'private'
+            - pattern: 'draft'
     # Schema for user account info (nothing private/personal)
     User:
       type: object

@@ -47,23 +47,24 @@ function PostBrief(props) {
   }
 
   /**
-   * This checks if the postPermissions is unlisted. If it is, the appendedClassName will be
-   * returned, otherwise an empty string will be returned.
-   * @param {string} appendedClassName class name which will be used for appending the class for unlisted posts
-   * @returns string for appending
+   * This looks at the post permissions returns a string to append to the
+   * element's class name(s).
+   * @returns string for appending to a class name
    */
-  const appendUnlistedClass = (appendedClassName = '') => {
-    if (postPermissions === 'unlisted') {
-      return appendedClassName;
-    }
-    else {
-      return '';
+  const appendClassForPermissions = () => {
+    switch (postPermissions) {
+      case 'unlisted':
+        return 'post-unlisted'
+      case 'draft':
+        return 'post-draft';
+      default:
+        return '';
     }
   }
 
   // component return function
   return (
-    <article className={'post' + appendUnlistedClass(' post-unlisted')} onClick={handleClick}>
+    <article className={'post ' + appendClassForPermissions()} onClick={handleClick}>
       {/* Title is wrapped in pre tags to prevent collapsing whitespace */}
       <pre><h1 className='post-title'>{postTitle}</h1></pre>
       <h4 className={'post-author-bar'}>{postAuthor}, {postDate}, {postPermissions}</h4>

@@ -3,8 +3,6 @@ import './PostReader.css';
 // modules
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import { uuidIsValid } from '../utilities/uuidRegexTester.js';
 import DOMPurify from 'dompurify';
 
 /**
@@ -42,15 +40,6 @@ export default function PostReader(props) {
     // retrieve a blog post
     getBlogPost(props.postID, setBlogPost);
   }, [props.postID]);
-
-  // validate the postID passed in is a valid UUID
-  const isUUID = uuidIsValid(props.postID);
-
-  // if the postID is not a valid UUID, redirect back to root
-  //  (so this is also another component return function) (refactor to be in the component return function later)
-  if (!isUUID) {
-    return <Redirect to='/' />
-  }
 
   // PostReader loading component
   const loadingComponent = (

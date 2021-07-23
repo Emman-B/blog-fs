@@ -32,8 +32,12 @@ function App() {
           <SignupRoute />
         </Route>
 
-        {/* Protected Route from editing posts */}
-        <ProtectedRoute path='/editor'>
+        {/* Protected Route for creating posts (with optional UUID path) */}
+        <ProtectedRoute exact path='/editor/new'>
+          <PostEditorRoute />
+        </ProtectedRoute>
+        {/* Protected Route for editing posts (with optional UUID path) */}
+        <ProtectedRoute exact path='/editor/edit/:id'>
           <PostEditorRoute />
         </ProtectedRoute>
 

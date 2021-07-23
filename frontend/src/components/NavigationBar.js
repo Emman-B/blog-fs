@@ -40,7 +40,7 @@ function NavigationBar(props) {
       {/* Greet user */}
       <div id='navbar-greeting' className='navbar-item'>Hello {localStorage.getItem('username')}</div>
       {/* New post should link to the editor route */}
-      <button className='navbar-item' onClick={() => history.push('/editor')}>New Post</button>
+      <button className='navbar-item' onClick={() => history.push('/editor/new')}>New Post</button>
       {/* Log Out button should run the logout function */}
       <button className='navbar-item' onClick={() => doLogout(history)}>Log Out</button>
     </>
