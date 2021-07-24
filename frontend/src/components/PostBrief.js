@@ -55,8 +55,8 @@ function PostBrief(props) {
     switch (postPermissions) {
       case 'unlisted':
         return 'post-unlisted'
-      case 'draft':
-        return 'post-draft';
+      case 'drafts':
+        return 'post-drafts';
       default:
         return '';
     }

@@ -47,7 +47,7 @@ export default function PostEditorRoute(props) {
           const userCanEdit = postValue.data.author === userValue.data.username;
           // store the post id, title, and content only if the author and username match
           if (userCanEdit) {
-            setPostData( {id: postID, title: postValue.data.title, content: postValue.data.content} );
+            setPostData( {id: postID, title: postValue.data.title, content: postValue.data.content, permissions: postValue.data.permissions} );
           }
           // allow the user to edit the post if the post author and the current user matches
           setAllowEdit(userCanEdit);

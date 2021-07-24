@@ -4,8 +4,8 @@ import 'react-quill/dist/quill.snow.css';
 
 import ReactQuill from 'react-quill';
 import DOMPurify from 'dompurify';
-import { Prompt, useHistory } from 'react-router-dom';
-import { useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 
 // options for react quill toolbar
@@ -43,8 +43,8 @@ function postNewBlogPost(title, permissions, content, history) {
   .then((response) => {
     // clear local storage of previous data
     cleanUpDraftData();
-    // return to main home page
-    history.push('/');
+    // refresh the page
+    history.go(0);
   })
   .catch((error) => {
     console.error(error);
@@ -67,8 +67,8 @@ function putExistingBlogPost(title, permissions, content, history, postID) {
     .then((response) => {
       // clear local storage of previous data
       cleanUpDraftData();
-      // return to main home page
-      history.push('/');
+      // refresh the page
+      history.go(0);
     })
     .catch((error) => {
       console.error(error);
@@ -94,6 +94,9 @@ export default function PostEditor(props) {
   // get the current post ID
   const postID = props.postData?.id;
 
+  /**
+   * Handles when a post is being submitted
+   */
   const handleSubmitting = () => {
     // note that the post is being submitted (to prevent a prompt)
     setIsSubmitting(true);
@@ -108,20 +111,49 @@ export default function PostEditor(props) {
     };
   }
 
+
+  useEffect(() => {
+    /**
+     * handles drafts when a post is not being submitted
+     */
+    const handleDraftSubmission = () => {
+      // do nothing if the history changes due to submission or no data was modified
+      if (isSubmitting || !isDirty) return;
+
+      if (postID) {
+        // update the existing blogpost if a postID was provided
+        putExistingBlogPost(postTitle, 'drafts', DOMPurify.sanitize(postContent), history, postID);
+      }
+      else {
+        // create a new blogpost
+        postNewBlogPost(postTitle, 'drafts', DOMPurify.sanitize(postContent), history);
+      };
+    };
+
+    // Clunky solution for deciding when to save drafts
+    //  Create a listener for when history changes, meaning a draft may need saving.
+    const unlisten = history.listen(() => {
+      if (!isSubmitting && isDirty) {
+        const saveDraft = window.confirm('Would you like to save a draft? (Unsaved changes will be lost!)')
+        if (saveDraft) {
+          handleDraftSubmission();
+        }
+      }
+    });
+
+    return () => {
+      unlisten();
+    };
+  }, [history, postContent, postID, postTitle, isSubmitting, isDirty]);
+
   // component return function
   return(
     // On any input in the form, set the dirty flag to true
     <form onInput={() => setIsDirty(true)}>
-      {/* Prompt user if they are leaving after modifying the form */}
-      <Prompt
-        when={isDirty && !isSubmitting}
-        message={(location, action) => `Are you sure you want to leave? A draft will be saved. Location '${location} Action: ${action}'`}
-      />
-
       <header>
         <h4>New Post</h4>
         <div>
-          <select ref={permissionsRef}>
+          <select ref={permissionsRef} defaultValue={props.postData?.permissions}>
             <option value='public'>Public</option>
             <option value='users'>Users</option>
             <option value='unlisted'>Unlisted</option>
@@ -147,8 +179,10 @@ export default function PostEditor(props) {
       {/* Post Content Editor */}
       <ReactQuill 
         modules={{toolbar: toolbarOptions}}
-        // When any change occurs, save it into local storage
-        onChange={(content) => setPostContent(content)}
+        onChange={(content) => {
+            setPostContent(content);
+            setIsDirty(true);
+          }}
         defaultValue={postContent}
       />
     </form>

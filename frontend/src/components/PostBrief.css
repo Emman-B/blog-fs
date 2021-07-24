@@ -22,6 +22,16 @@ article.post-unlisted:hover {
     opacity: 1;
 }
 
+article.post-drafts {
+    background-color: hsl(0, 75%, 95%);
+    color: hsl(0, 75%, 50%);
+}
+
+article.post-drafts:hover {
+    background-color: hsl(0, 75%, 90%);
+    color: hsl(0, 75%, 40%);
+}
+
 .post:hover {
     background-color: hsl(200, 40%, 90%);
     color: hsl(200, 100%, 20%);

@@ -58,6 +58,7 @@ exports.getBlogPost = async (req, res) => {
   
   // if it was found and it doesn't have the 'public'/'unlisted' permissions setting, permissions need to be handled
   switch (blogPost.permissions) {
+    case 'drafts': // same as private
     case 'private':
       // check if the user is logged in and the username matches the author
       if (req.user?.username !== blogPost.author) {
@@ -110,6 +111,8 @@ exports.getBlogPosts = async (req, res) => {
       case 'unlisted': // unlisted blogposts can be shown in this route to the author only, but are otherwise available to everyone with a link
         return (req.user?.username === blogPost.author);
       case 'private': // private blogposts are available only to the author
+        return (req.user?.username === blogPost.author);
+      case 'drafts': // draft blogposts are available only to the author
         return (req.user?.username === blogPost.author);
     }
   });
@@ -188,7 +191,7 @@ exports.updateExistingBlogPost = async (req, res) => {
   blogPost.permissions = (permissions !== undefined)?permissions:blogPost.permissions;
   blogPost.updatedDate = new Date().toISOString(); // set the updated date to be now
   // update the item in the database
-  console.warn('[createBlogPost] Dummy data is being written into');
+  console.warn('[updateExistingBlogPost] Dummy data is being written into');
   blogPosts[blogPostIndex] = blogPost;
   // send the updated blogpost in the response
   res.status(200).json(blogPost);
