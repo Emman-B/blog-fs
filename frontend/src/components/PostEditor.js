@@ -51,6 +51,30 @@ function postNewBlogPost(title, permissions, content, history) {
   });
 }
 
+/**
+ * Updates an existing blogpost with data
+ * @param {string} title title to provide
+ * @param {string} permissions permissions to use
+ * @param {string} content content of the blogpost
+ * @param {object} history react router dom history object for redirection
+ * @param {string} postID ID of the blogpost to update
+ */
+function putExistingBlogPost(title, permissions, content, history, postID) {
+  // make a PUT request with the data being edited
+  axios.put(`http://localhost:3010/v1/blogposts/${postID}`,
+      {title: title, content: DOMPurify.sanitize(content), permissions: permissions},
+      {withCredentials: true})
+    .then((response) => {
+      // clear local storage of previous data
+      cleanUpDraftData();
+      // return to main home page
+      history.push('/');
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 export default function PostEditor(props) {
   // == State to keep track of
   // checks to see if the form was modified in any way
@@ -67,16 +91,22 @@ export default function PostEditor(props) {
   // react router history
   const history = useHistory();
 
-
   // get the current post ID
-  // const postID = props.id;
+  const postID = props.postData?.id;
 
   const handleSubmitting = () => {
     // note that the post is being submitted (to prevent a prompt)
     setIsSubmitting(true);
-    // make the post request
-    postNewBlogPost(postTitle, permissionsRef.current.value, DOMPurify.sanitize(postContent), history);
-  };
+
+    if (postID) {
+      // update the existing blogpost if a postID was provided
+      putExistingBlogPost(postTitle, permissionsRef.current.value, DOMPurify.sanitize(postContent), history, postID);
+    }
+    else {
+      // create a new blogpost
+      postNewBlogPost(postTitle, permissionsRef.current.value, DOMPurify.sanitize(postContent), history);
+    };
+  }
 
   // component return function
   return(

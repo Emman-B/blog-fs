@@ -4,6 +4,7 @@ import './PostReader.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
+import { useHistory } from 'react-router-dom';
 
 /**
  * Makes a GET request to retrieve a specified blog post
@@ -26,6 +27,20 @@ function getBlogPost(postID, setBlogPost) {
 }
 
 /**
+ * make a GET request to get the user details
+ * @param {function} setUser sets the current user
+ */
+function getUser(setUser) {
+  axios.get('http://localhost:3010/v1/user', {withCredentials: true})
+    .then((response) => {
+      setUser(response.data);
+    })
+    .catch((error) => {
+      setUser({error: true});
+    });
+}
+
+/**
  * Post Reader main component function
  * @param {object} props properties passed onto it from parent component
  * @returns JSX, the PostReader component
@@ -34,12 +49,24 @@ export default function PostReader(props) {
   // state to keep track of
   // Keep track of the blog post object
   const [blogPost, setBlogPost] = useState(undefined);
+  const [user, setUser] = useState(undefined);
 
   // side effects for components
   useEffect(() => {
     // retrieve a blog post
     getBlogPost(props.postID, setBlogPost);
+    // also, check if the user is allowed to edit this
+    getUser(setUser);
   }, [props.postID]);
+
+  // react router history
+  const history = useHistory();
+
+  // function for handling editing a post
+  const handleEditPost = () => {
+    // go to the editor route with the ID of the blogpost
+    history.push(`/editor/edit/${props.postID}`);
+  };
 
   // PostReader loading component
   const loadingComponent = (
@@ -59,6 +86,7 @@ export default function PostReader(props) {
       <h5>{blogPost.publishDate}</h5>
       <h5>{blogPost.updatedDate}</h5>
       <div>{blogPost.permissions}</div>
+      {(blogPost.author === user?.username)?<button onClick={handleEditPost}>Edit Post</button>:<></>}
       {/* Make sure to include the ql-snow and ql-editor classes for styling */}
       <pre className='post-reader-content ql-snow ql-editor' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(blogPost.content)}}></pre>
     </>
