@@ -1,9 +1,8 @@
 // sanitization module
 const sanitizeHtml = require('sanitize-html');
-// uuid module
-const { v4: uuidv4 } = require('uuid');
-// dummy data of blog posts
-const blogPosts = require('./dummy/posts.json');
+
+// database module
+const db = require('./db.js');
 
 
 // From sanitize-html, the options
@@ -45,10 +44,9 @@ const sanitizeHtmlOptions = {
  * @param {import('express').Response} res response which should return blog posts
  */
 exports.getBlogPost = async (req, res) => {
-  console.warn('[getBlogPosts] Dummy data is being read!');
-
   // find the blogpost with the corresponding ID
-  const blogPost = blogPosts.find((element) => element.id.toLowerCase() === req.params.id.toLowerCase());
+  const blogPost = await db.selectOneBlogPost(req.params.id.toLowerCase());
+  console.log(blogPost);
 
   // if it was not found, return a 404 response
   if (blogPost == null) {
@@ -94,31 +92,16 @@ exports.getBlogPost = async (req, res) => {
  * @param {import('express').Response} res response which should return blog posts
  */
 exports.getBlogPosts = async (req, res) => {
-  console.warn('[getBlogPosts] Dummy data is being read!');
+  // get the blogposts from the database
+  const blogPosts_ = await db.selectBlogPosts(req.user);
 
   // sort by date before providing the blogposts
-  blogPosts.sort((postA, postB) => {
-    return new Date(postB.updatedDate) - new Date(postA.updatedDate);
+  blogPosts_.sort((postA, postB) => {
+    return new Date(postB.updateddate) - new Date(postA.updateddate);
   })
 
-  // filter depending on permissions of blog posts
-  const sentBlogPosts = blogPosts.filter((blogPost) => {
-    switch (blogPost.permissions) {
-      case 'public': // public blogposts are available to all unauthenticated and authenticated users
-        return true;
-      case 'users': // users blogposts are available to all authenticated users
-        return req.user !== undefined;
-      case 'unlisted': // unlisted blogposts can be shown in this route to the author only, but are otherwise available to everyone with a link
-        return (req.user?.username === blogPost.author);
-      case 'private': // private blogposts are available only to the author
-        return (req.user?.username === blogPost.author);
-      case 'drafts': // draft blogposts are available only to the author
-        return (req.user?.username === blogPost.author);
-    }
-  });
-
   // send the dummy data
-  res.json(sentBlogPosts);
+  res.json(blogPosts_);
 };
 
 /**
@@ -138,21 +121,23 @@ exports.createBlogPost = async (req, res) => {
 
   // otherwise, create the new blogpost with the title and content set
   const newBlogPost = {};
-  // generate a new uuid
-  newBlogPost.id = uuidv4();
   newBlogPost.author = req.user.username;
   newBlogPost.title = title?title:'Untitled Post'; // Untitled Post is a default name
   newBlogPost.permissions = permissions?permissions:'public'; // public by default
-  newBlogPost.publishDate = new Date().toISOString();
-  newBlogPost.updatedDate = newBlogPost.publishDate;
+  newBlogPost.publishdate = new Date().toISOString();
+  newBlogPost.updateddate = newBlogPost.publishdate;
   // sanitize the content received from the client
   newBlogPost.content = sanitizeHtml(content, sanitizeHtmlOptions);
 
   // add it to the blog post database
-  console.warn('[createBlogPost] Dummy data is being written into');
-  blogPosts.push(newBlogPost);
+  const insertedBlogPost = await db.insertNewBlogPost(newBlogPost);
 
-  res.status(201).json(newBlogPost);
+  // if any errors occurred in insertion, send an error response
+  if (insertedBlogPost == null) {
+    res.status(400).send();
+    return;
+  }
+  res.status(201).json(insertedBlogPost);
 };
 
 /**
@@ -165,17 +150,13 @@ exports.updateExistingBlogPost = async (req, res) => {
   const {id} = req.params;
 
   // Find the corresponding blog post in the database with the ID
-  console.warn('[updateExistingBlogPost] Reading dummy data');
-  const blogPostIndex = blogPosts.findIndex((blogPost) => blogPost.id === id);
+  const blogPost = await db.selectOneBlogPost(id);
   
   // If there is no blogpost, return a 404 status code
-  if (blogPostIndex === -1) {
+  if (blogPost == null) {
     res.status(404).send();
     return;
   }
-
-  // get the blogpost at the found index
-  const blogPost = blogPosts[blogPostIndex];
 
   // If there is a blogpost, verify that the author is the same as the user (401 if not)
   if (blogPost.author !== req.user.username) {
@@ -191,8 +172,12 @@ exports.updateExistingBlogPost = async (req, res) => {
   blogPost.permissions = (permissions !== undefined)?permissions:blogPost.permissions;
   blogPost.updatedDate = new Date().toISOString(); // set the updated date to be now
   // update the item in the database
-  console.warn('[updateExistingBlogPost] Dummy data is being written into');
-  blogPosts[blogPostIndex] = blogPost;
+  const updatedBlogPost = await db.updateExistingBlogPost(blogPost);
+  // if any errors occurred in updating, send an error response
+  if (updatedBlogPost == null) {
+    res.status(400).send();
+    return;
+  }
   // send the updated blogpost in the response
-  res.status(200).json(blogPost);
+  res.status(200).json(updatedBlogPost);
 }

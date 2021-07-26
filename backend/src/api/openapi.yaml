@@ -240,8 +240,8 @@ components:
         - author
         - title
         - permissions
-        - publishDate
-        - updatedDate
+        - publishdate
+        - updateddate
         - content
 
       properties:
@@ -261,10 +261,10 @@ components:
             - pattern: 'unlisted'
             - pattern: 'private'
             - pattern: 'draft'
-        publishDate:
+        publishdate:
           type: string
           format: date-time
-        updatedDate:
+        updateddate:
           type: string
           format: date-time
         content:
