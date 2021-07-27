@@ -60,6 +60,11 @@ async function selectBlogPosts(currentUser) {
   }
 }
 
+/**
+ * Inserts a new blog post
+ * @param {object} newBlogPost New Blog Post to insert into the database
+ * @return blog post that was inserted
+ */
 async function insertNewBlogPost({author, title, permissions, publishdate, updateddate, content}) {
   // create the query for insertion, using the new blog post object
   const query = {
@@ -79,6 +84,11 @@ async function insertNewBlogPost({author, title, permissions, publishdate, updat
   }
 }
 
+/**
+ * Updates an existing blogpost. The updated blog post parameter needs the ID
+ * @param {object} updatedBlogPost the blog post with the updated information
+ * @return the blog post that was updated
+ */
 async function updateExistingBlogPost(updatedBlogPost) {
   const {id, title, permissions, updateddate, content} = updatedBlogPost;
   // create the query that makes use of the existing blog post UUID
@@ -99,10 +109,99 @@ async function updateExistingBlogPost(updatedBlogPost) {
   }
 }
 
+/**
+ * Verifies if the provided username and email is unique, checking
+ * it against the database.
+ * @param {string} email email to check
+ * @param {string} username username to check
+ * @return an object that verifies the uniqueness of the email or username, or
+ * it indicates if either the email or username has been taken
+ */
+async function verifyEmailAndUsernameAreUnique(email, username) {
+  // create the query which checks the email and username columns
+  const query = {
+    text: `SELECT * FROM users WHERE LOWER(email) LIKE LOWER($1) OR LOWER(username) LIKE LOWER($2)`,
+    values: [ email, username ],
+  };
+
+  try {
+    const {rows} = await pool.query(query);
+    // if no results were found, then return an object indicating a unique email and username
+    if (rows.length === 0) {
+      return { unique: true };
+    }
+    // otherwise, check if either the email or username is not unique
+    const result = {};
+    for (const row of rows) {
+      if (row.username.toLowerCase() === username.toLowerCase()) {
+        result.username = true;
+      }
+      if (row.email.toLowerCase() === email.toLowerCase()) {
+        result.email = true;
+      }
+    }
+    return result;
+  }
+  catch (err) {
+    console.error(err);
+  }
+}
+
+/**
+ * Inserts a new user to the database
+ * @param {string} email email of the new user
+ * @param {string} username username of the new user
+ * @param {string} hashedSaltedPassword password of the new user that has been hashed and salted
+ * @returns the new user's email and username
+ */
+async function insertNewUser(email, username, hashedSaltedPassword) {
+  // create the query to store a new user into the database
+  const query = {
+    text: `INSERT INTO users (email, username, password) VALUES ($1, $2, $3)` +
+        ` RETURNING email, username;`,
+    values: [ email, username, hashedSaltedPassword ],
+  };
+
+  try {
+    const {rows} = await pool.query(query);
+    // return the email and username of the newly created user
+    return { email: rows[0].email, username: rows[0].username };
+  }
+  catch (err) {
+    console.error(err);
+  }
+}
+
+async function selectUser(emailOrUsername) {
+  // create the query to find the account with the corresponding email or username
+  const query = {
+    text: `SELECT * FROM users WHERE LOWER(username) = LOWER($1)` +
+      ` OR LOWER(email) = LOWER($1);`,
+    values: [ emailOrUsername ],
+  };
+
+  try {
+    const {rows} = await pool.query(query);
+
+    if (rows.length === 1) {
+      return rows[0];
+    }
+  }
+  catch (err) {
+    console.error(err);
+  }
+}
+
 // Exports
 module.exports = {
+  // blogposts
   selectOneBlogPost,
   selectBlogPosts,
   insertNewBlogPost,
   updateExistingBlogPost,
+
+  // users
+  verifyEmailAndUsernameAreUnique,
+  insertNewUser,
+  selectUser,
 };
