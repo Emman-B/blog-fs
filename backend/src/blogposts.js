@@ -46,7 +46,6 @@ const sanitizeHtmlOptions = {
 exports.getBlogPost = async (req, res) => {
   // find the blogpost with the corresponding ID
   const blogPost = await db.selectOneBlogPost(req.params.id.toLowerCase());
-  console.log(blogPost);
 
   // if it was not found, return a 404 response
   if (blogPost == null) {
