@@ -110,6 +110,43 @@ async function updateExistingBlogPost(updatedBlogPost) {
 }
 
 /**
+ * Deletes a blog post from the database.
+ * @param {string} id UUID of the blog post to delete
+ * @param {string} username username of the client trying to delete something
+ * @returns true if deletion succeeded, false if deletion failed, undefined if an error occurred
+ */
+async function deleteBlogPost(id, username) {
+  // shared condition for selecting and deleting
+  const condition = `WHERE id = $1 AND LOWER(author) = LOWER($2)`;
+  // make the query to find the blog post before deletion
+  const selectQuery = {
+    text: `SELECT author FROM blogposts ` + condition,
+    values: [ id, username ],
+  };
+
+  // make the query to delete the blog post
+  const deleteQuery = {
+    text: `DELETE FROM blogposts ` + condition,
+    values: [ id, username ],
+  };
+
+  try {
+    // verify that the provided username contains a blogpost with the specified id
+    const {rows} = await pool.query(selectQuery);
+    if (rows.length > 0) {
+      // then, make the deletion
+      await pool.query(deleteQuery);
+      return true;
+    }
+    return false;
+  }
+  catch (err) {
+    console.error(err);
+    return undefined;
+  }
+}
+
+/**
  * Verifies if the provided username and email is unique, checking
  * it against the database.
  * @param {string} email email to check
@@ -172,6 +209,11 @@ async function insertNewUser(email, username, hashedSaltedPassword) {
   }
 }
 
+/**
+ * retrieves the user's details
+ * @param {string} emailOrUsername email or username of the user
+ * @returns the user's details, including hashed and salted password
+ */
 async function selectUser(emailOrUsername) {
   // create the query to find the account with the corresponding email or username
   const query = {
@@ -199,6 +241,7 @@ module.exports = {
   selectBlogPosts,
   insertNewBlogPost,
   updateExistingBlogPost,
+  deleteBlogPost,
 
   // users
   verifyEmailAndUsernameAreUnique,

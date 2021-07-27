@@ -115,6 +115,28 @@ paths:
           description: Not authorized to update blog post (not the author)
         '404':
           description: Blog post was not found
+
+    delete:
+      tags:
+        - Blog Posts
+      summary: Deletes a blog post, which can only be done by the authorized author
+      # ID parameter for identifying the blogpost to delete
+      parameters:
+        - in: path
+          name: id # ID of blog post
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: the UUID of blogpost to edit
+
+      responses:
+        '204':
+          description: The blog post has been deleted
+        '404':
+          description: The blog post with the specified id and author was not found.
+        '500':
+          description: There was an unexpected error.
       
 
   /v1/user:

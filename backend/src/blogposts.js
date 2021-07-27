@@ -140,7 +140,7 @@ exports.createBlogPost = async (req, res) => {
 };
 
 /**
- * 
+ * Updates an existing blog post
  * @param {import('express').Request} req client request containing the updated blog post data
  * @param {import('express').Response} res server response indicating update status
  */
@@ -180,3 +180,28 @@ exports.updateExistingBlogPost = async (req, res) => {
   // send the updated blogpost in the response
   res.status(200).json(updatedBlogPost);
 }
+
+/**
+ * Deletes a blog post with a specified id. The authenticated user must be the author
+ * @param {import('express').Request} req Client request to delete blog post, contains id parameter
+ * @param {import('express').Response} res Server response
+ */
+exports.deleteBlogPost = async (req, res) => {
+  const {id} = req.params;
+  const {username} = req.user;
+
+  // delete the blog post
+  const deletionResult = await db.deleteBlogPost(id, username);
+
+  // deletion failure case: not found
+  if (deletionResult === false) {
+    return res.status(404).send();
+  }
+  // deletion failure case: error occurred
+  else if (deletionResult === undefined || deletionResult === null) {
+    return res.status(500).send();
+  }
+
+  // deletion success case
+  return res.status(204).send();
+};

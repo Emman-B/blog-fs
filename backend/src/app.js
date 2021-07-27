@@ -19,7 +19,7 @@ const fs = require('fs'); // used when loading the openapi spec
 const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading the api specification
 
 // blog post route code imported here
-const { getBlogPosts, createBlogPost, getBlogPost, updateExistingBlogPost } = require('./blogposts');
+const { getBlogPosts, createBlogPost, getBlogPost, updateExistingBlogPost, deleteBlogPost } = require('./blogposts');
 const { createNewAccount, loginToAccount, authenticateTokenCookie, logoutAccount, getLoggedInUserInfo, checkTokenCookie } = require('./auth');
 
 // == middleware == //
@@ -90,6 +90,8 @@ app.get('/v1/blogposts/:id', checkTokenCookie, getBlogPost);
 app.post('/v1/blogposts', authenticateTokenCookie, createBlogPost);
 // updating an existing blog post (requires authentication middleware)
 app.put('/v1/blogposts/:id', authenticateTokenCookie, updateExistingBlogPost);
+// deleting a blog post (requires authentication middleware)
+app.delete('/v1/blogposts/:id', authenticateTokenCookie, deleteBlogPost);
 
 /**
  * /user path deals with anything related to users
