@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dbsetup": "node src/db.setup.js",
     "start": "nodemon -e js,mjs,json,yaml src/server.js"
   },
   "repository": {
@@ -29,6 +30,7 @@
     "nodemon": "^2.0.7",
     "pg": "^8.6.0",
     "sanitize-html": "^2.4.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "yargs": "^17.0.1"
   }
 }
