@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS blogposts (
     author VARCHAR(64) NOT NULL REFERENCES users(username),
     title VARCHAR(128) NOT NULL,
     permissions VARCHAR(32) NOT NULL,
-    publishdate VARCHAR(32) NOT NULL,
-    updateddate VARCHAR(32) NOT NULL,
+    publishdate TIMESTAMP WITH TIME ZONE NOT NULL,
+    updateddate TIMESTAMP WITH TIME ZONE NOT NULL,
     content TEXT NOT NULL
 );

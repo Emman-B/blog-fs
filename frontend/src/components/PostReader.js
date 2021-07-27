@@ -68,6 +68,26 @@ export default function PostReader(props) {
     history.push(`/editor/edit/${props.postID}`);
   };
 
+  // function for handling deleting a post
+  const handleDeletePost = () => {
+    const deletionConfirmation = window.confirm('Are you sure you want to delete this post?');
+
+    if (deletionConfirmation && blogPost.id) {
+      // make a request to delete this post
+      axios.delete(`http://localhost:3010/v1/blogposts/${blogPost.id}`, {withCredentials: true})
+      .then(() => {
+        // on successful deletion, return to main
+        history.push('/');
+      })
+      .catch((err) => {
+        // on unsuccessful deletion, send an alert and refresh the page
+        window.alert(`There was a problem with deleting the blog post. An error has been logged to the console.`);
+        console.error(err);
+        history.go(0);
+      });
+    }
+  };
+
   // PostReader loading component
   const loadingComponent = (
     <div>Loading</div>
@@ -83,10 +103,13 @@ export default function PostReader(props) {
     <>
       <pre><h1>{blogPost.title}</h1></pre>
       <h4>{blogPost.author}</h4>
-      <h5>{blogPost.publishDate}</h5>
-      <h5>{blogPost.updatedDate}</h5>
+      <h5>{blogPost.publishdate}</h5>
+      <h5>{blogPost.updateddate}</h5>
       <div>{blogPost.permissions}</div>
+      {/* Extra author controls */}
       {(blogPost.author === user?.username)?<button onClick={handleEditPost}>Edit Post</button>:<></>}
+      {(blogPost.author === user?.username)?<button onClick={handleDeletePost}>Delete Post</button>:<></>}
+
       {/* Make sure to include the ql-snow and ql-editor classes for styling */}
       <pre className='post-reader-content ql-snow ql-editor' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(blogPost.content)}}></pre>
     </>
