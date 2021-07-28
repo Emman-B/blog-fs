@@ -4,7 +4,6 @@
  */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { cleanUpDraftData } from '../components/PostEditor';
 
 
 /**
@@ -71,9 +70,6 @@ export function doLogout(history) {
       //    are what needs to be done regardless of success/failure
       localStorage.removeItem('email');
       localStorage.removeItem('username');
-
-      // also clean up any draft data
-      cleanUpDraftData();
 
       history.go(0); // refresh the current page
     });

@@ -169,7 +169,7 @@ exports.updateExistingBlogPost = async (req, res) => {
   blogPost.title = (title !== undefined)?title:blogPost.title;
   blogPost.content = (content !== undefined)?sanitizeHtml(content, sanitizeHtmlOptions):blogPost.content;
   blogPost.permissions = (permissions !== undefined)?permissions:blogPost.permissions;
-  blogPost.updatedDate = new Date().toISOString(); // set the updated date to be now
+  blogPost.updateddate = new Date().toISOString(); // set the updated date to be now
   // update the item in the database
   const updatedBlogPost = await db.updateExistingBlogPost(blogPost);
   // if any errors occurred in updating, send an error response

@@ -41,10 +41,7 @@ function postNewBlogPost(title, permissions, content, history) {
   // make post request
   axios.post('http://localhost:3010/v1/blogposts', {title: title, content: DOMPurify.sanitize(content), permissions: permissions}, {withCredentials: true})
   .then((response) => {
-    // clear local storage of previous data
-    cleanUpDraftData();
-    // refresh the page
-    history.go(0);
+    history.push('/');
   })
   .catch((error) => {
     console.error(error);
@@ -65,10 +62,7 @@ function putExistingBlogPost(title, permissions, content, history, postID) {
       {title: title, content: DOMPurify.sanitize(content), permissions: permissions},
       {withCredentials: true})
     .then((response) => {
-      // clear local storage of previous data
-      cleanUpDraftData();
-      // refresh the page
-      history.go(0);
+      history.push('/');
     })
     .catch((error) => {
       console.error(error);
@@ -187,14 +181,4 @@ export default function PostEditor(props) {
       />
     </form>
   );
-}
-
-/**
- * (Helper function)
- * Removes any draft data saved into local storage by the PostEditor.
- */
-export function cleanUpDraftData() {
-  console.warn('Warning: cleanUpDraftData is going to be deprecated');
-  localStorage.removeItem('draftTitle');
-  localStorage.removeItem('draftContent');
 }

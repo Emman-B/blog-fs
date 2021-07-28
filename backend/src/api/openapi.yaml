@@ -355,13 +355,19 @@ components:
       properties:
         username:
           type: string
+          minLength: 3
+          maxLength: 64
         email:
           type: string
           format: email
         password:
           type: string
+          minLength: 8
+          maxLength: 64
         passwordConfirmation:
           type: string
+          minLength: 8
+          maxLength: 64
 
 # Apply security scheme to all endpoints
 security:
