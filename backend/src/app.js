@@ -20,7 +20,7 @@ const apiSpec = YAML.load(fs.readFileSync('src/api/openapi.yaml')); // loading t
 
 // blog post route code imported here
 const { getBlogPosts, createBlogPost, getBlogPost, updateExistingBlogPost, deleteBlogPost } = require('./blogposts');
-const { createNewAccount, loginToAccount, authenticateTokenCookie, logoutAccount, getLoggedInUserInfo, checkTokenCookie } = require('./auth');
+const { createNewAccount, loginToAccount, authenticateTokenCookie, logoutAccount, getLoggedInUserInfo, checkTokenCookie, updateUserDetails } = require('./auth');
 
 // == middleware == //
 /**
@@ -98,6 +98,8 @@ app.delete('/v1/blogposts/:id', authenticateTokenCookie, deleteBlogPost);
  */
 // check the currently logged-in account
 app.get('/v1/user', authenticateTokenCookie, getLoggedInUserInfo);
+// update a user's details
+app.put('/v1/user', authenticateTokenCookie, updateUserDetails);
 // creating a new account
 app.post('/v1/user/signup', createNewAccount);
 // logging into an existing account

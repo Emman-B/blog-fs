@@ -234,6 +234,34 @@ async function selectUser(emailOrUsername) {
   }
 }
 
+/**
+ * Updates the user's password
+ * @param {object} currentUser the current logged-in user with the username and email properties
+ * @param {string} newHashedSaltedPassword the hashed and salted password (DO NOT USE AN UNHASHED
+ * UNSALTED PASSWORD FROM THE USER)
+ * @return the username and email of the user's updated password
+ */
+async function updateUserPassword(currentUser, newHashedSaltedPassword) {
+  const query = {
+    text: `UPDATE ONLY users`
+        + ` SET password = $1`
+        + ` WHERE username = $2 AND email = $3`
+        + ` RETURNING username, email`,
+    values: [ newHashedSaltedPassword, currentUser.username, currentUser.email ],
+  };
+
+  try {
+    const {rows} = await pool.query(query);
+
+    if (rows.length !== 0) {
+      const {username, email} = rows[0];
+      return {username, email};
+    }
+  } catch (err) {
+    console.error(error);
+  }
+}
+
 // Exports
 module.exports = {
   // blogposts
@@ -247,4 +275,8 @@ module.exports = {
   verifyEmailAndUsernameAreUnique,
   insertNewUser,
   selectUser,
+  // object for updating specific details
+  updateUser: {
+    password: updateUserPassword,
+  },
 };

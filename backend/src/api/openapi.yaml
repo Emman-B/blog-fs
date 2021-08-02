@@ -154,6 +154,23 @@ paths:
         
         '401':
           description: User may not be logged in
+    
+    put:
+      tags:
+        - User Accounts
+      summary: Change user's details
+      requestBody:
+        description: These are the details to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
+      responses:
+        '200':
+          description: Details were changed successfully
+        '400':
+          description: There was an error with the request
 
   /v1/user/signup:
     post:
@@ -360,6 +377,23 @@ components:
         email:
           type: string
           format: email
+        password:
+          type: string
+          minLength: 8
+          maxLength: 64
+        passwordConfirmation:
+          type: string
+          minLength: 8
+          maxLength: 64
+          
+    # Schema for updating a user's existing information
+    UpdateUser:
+      type: object
+      required: # only password is required because it's the only updatable user detail
+        - password
+        - passwordConfirmation
+
+      properties:
         password:
           type: string
           minLength: 8

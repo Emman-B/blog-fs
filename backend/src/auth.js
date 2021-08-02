@@ -117,6 +117,54 @@ exports.loginToAccount = async (req, res) => {
 };
 
 /**
+ * Updates user details
+ * @param {import('express').Request} req client request containing password + confirmation
+ * @param {import('express').Response} res server response
+ */
+exports.updateUserDetails = async (req, res) => {
+  // if a password change is being done, call the corresponding function
+  if (req.body.password && req.body.passwordConfirmation) {
+    const result = await updateUserPassword(req, res);
+
+    // return result only if it is defined
+    if (result) {
+      return result;
+    }
+  }
+
+  // if nothing happens, then respond with a 400
+  return res.status(400).send();
+};
+
+
+/**
+ * Updates user details
+ * @param {import('express').Request} req client request containing password + confirmation
+ * @param {import('express').Response} res server response
+ */
+const updateUserPassword = async (req, res) => {
+  // validate that the password and password confirmation is accurate
+  if (req.body.password === req.body.passwordConfirmation) {
+    try {
+      const newHashedSaltedPassword = await bcrypt.hash(req.body.password, 10);
+      // call the corresponding database function to update passwords
+      const updateResult = await db.updateUser.password(req.user, newHashedSaltedPassword);
+
+      if (updateResult !== undefined) {
+        return res.status(200).send();
+      }
+      return res.status(400).send();
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(500).send();
+    }
+  }
+  // return a 400 if nothing happens
+  return res.status(400).send();
+};
+
+/**
  * Authenticate JWT middleware, updates the req.user property or sends an error status code.
  * In other words, this middleware will look at the authorization header of the request
  * and verifies if it is valid or invalid.
