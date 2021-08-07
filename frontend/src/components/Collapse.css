@@ -1,0 +1,23 @@
+/* This is the entire Collapse element */
+.collapse {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* This is the button for toggling the collapse element */
+.collapse-button {
+    width: fit-content;
+}
+
+/* This is the div that is being animated by react-spring */
+.collapse-animated-div {
+    width: fit-content;
+    overflow: hidden;
+}
+
+/* This is the content being shown/hidden */
+.collapse-content {
+    display: flex;
+    flex-direction: column;
+}
