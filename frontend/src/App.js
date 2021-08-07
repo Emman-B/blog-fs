@@ -11,12 +11,14 @@ import SignupRoute from './routes/SignupRoute';
 import LoginRoute from './routes/LoginRoute';
 import PostEditorRoute from './routes/PostEditorRoute';
 import PostReaderRoute from './routes/PostReaderRoute';
+import NavigationBar from './components/NavigationBar';
 
 function App() {
 
   // component return function
   return (
     <HashRouter>
+      <NavigationBar />
       {/* Switch is being used to prevent any ProtectedRoutes from being rendered prematurely */}
       <Switch>
         <Route exact path='/'>

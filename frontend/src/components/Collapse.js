@@ -1,5 +1,5 @@
 // style import
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSpring, animated } from 'react-spring';
 import useMeasure from 'react-use-measure';
 import './Collapse.css';
@@ -41,13 +41,31 @@ export default function Collapse ({children}) {
   // state to keep track of
   const [isCollapsed, setIsCollapsed] = useState(true);
 
+  // reference of the collapse object
+  const collapseRef = useRef();
+
   // measure the height of the collapsible
   const [collapsibleRef, {height: viewHeight}] = useMeasure();
 
   // handles toggling the colllapse state
-  const handleCollapseClick = () => {
-    setIsCollapsed(!isCollapsed);
+  const handleToggleCollapseClick = (event) => {
+    event.stopPropagation(); // prevents running doCollapseWhenClickingEverywhere()
+    setIsCollapsed((isCollapsed) => {
+      return !isCollapsed;
+    });
   };
+
+  // handles always collapsing the collapse component (when clicking anywhere)
+  const doCollapseWhenClickingEverywhere = () => {
+    if (!isCollapsed) {
+      setIsCollapsed(true);
+    }
+  }
+
+  // useeffect to collapse on every click anywhere on screen
+  useEffect(() => {
+    document.addEventListener('click', doCollapseWhenClickingEverywhere);
+  });
 
   // react-spring hook for animating the height change and opacity change
   const { height, opacity } = useSpring({
@@ -62,8 +80,8 @@ export default function Collapse ({children}) {
 
   // component return function
   return (
-    <div className={'collapse'}>
-      <button className={'collapse-button'} onClick={handleCollapseClick}>Menu</button>
+    <div ref={collapseRef} className={'collapse'}>
+      <button className={'collapse-button'} onClick={handleToggleCollapseClick}>Menu</button>
 
       {/* Animated div to have its height and opacity animated */}
       <animated.div className={'collapse-animated-div'} style={{

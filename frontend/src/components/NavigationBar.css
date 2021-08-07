@@ -5,6 +5,7 @@
     padding: 5px;
     justify-content: space-between;
     align-items: baseline;
+    height: 30px;
 
     background-color: black;
     color:white;
@@ -20,7 +21,6 @@
 #navbar-left, #navbar-right {
     display: flex;
     flex-direction: row;
-    align-self: center;
 }
 
 @media only screen and (max-width: 600px) {
@@ -41,6 +41,7 @@ button.navbar-item {
     border: none;
     padding: 0.5vh 2vw;
     border-radius: 5px;
+    align-self: stretch;
 }
 button.navbar-item:hover {
     background-color: hsl(0, 0%, 50%);

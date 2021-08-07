@@ -145,7 +145,7 @@ export default function PostEditor(props) {
     // On any input in the form, set the dirty flag to true
     <form onInput={() => setIsDirty(true)}>
       <header>
-        <h4>New Post</h4>
+        <h4 id='newpost-title'>New Post</h4>
         <div>
           <select ref={permissionsRef} defaultValue={props.postData?.permissions}>
             <option value='public'>Public</option>

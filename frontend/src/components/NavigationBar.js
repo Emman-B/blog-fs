@@ -1,6 +1,7 @@
 import './NavigationBar.css';
 import { useHistory } from 'react-router-dom';
 import { doLogout, useAuthState  } from '../authentication/Authentication';
+import Collapse from './Collapse';
 
 /**
  * Navigation Bar with basic navigation buttons and the name of the web app
@@ -20,30 +21,26 @@ function NavigationBar(props) {
 
   // if user is logged out, show this
   const NavbarRightLoggedOut = (
-    <>
-      <div>
-        <button id='navbar-login' className='navbar-item' onClick={() => {
-          history.push('/login');
-        }}>Login</button>
-      </div>
-      <div>
-        <button id='navbar-signup' className='navbar-item' onClick={() => {
-          history.push('/signup');
-        }}>Sign Up</button>
-      </div>
-    </>
+    <Collapse>
+      <button id='navbar-login' className='navbar-item' onClick={() => {
+        history.push('/login');
+      }}>Login</button>
+      <button id='navbar-signup' className='navbar-item' onClick={() => {
+        history.push('/signup');
+      }}>Sign Up</button>
+    </Collapse>
   );
 
   // if user is logged in, show this
   const NavbarRightLoggedIn = (
-    <>
+    <Collapse>
       {/* Greet user */}
-      <div id='navbar-greeting' className='navbar-item'>Hello {localStorage.getItem('username')}</div>
+      <button id='navbar-greeting' className='navbar-item'>Hello {localStorage.getItem('username')}</button>
       {/* New post should link to the editor route */}
       <button className='navbar-item' onClick={() => history.push('/editor/new')}>New Post</button>
       {/* Log Out button should run the logout function */}
       <button className='navbar-item' onClick={() => doLogout(history)}>Log Out</button>
-    </>
+    </Collapse>
   );
 
   // function to decide what component to render for the right side of navbar: user logged in, user logged out, or "loading"
@@ -54,7 +51,7 @@ function NavigationBar(props) {
     // case: user is not logged in
     else if (isLoggedIn === false) return NavbarRightLoggedOut;
     // case: isLoggedIn === null so display nothing
-    else return <></>;
+    else return <Collapse />;
   }
 
 

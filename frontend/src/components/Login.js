@@ -17,6 +17,7 @@ function postLoginDetails(emailOrUsernameRef, passwordRef, history) {
     localStorage.setItem('username', response.data.username);
     // return the user back to the home route
     history.push('/');
+    history.go(0);
   })
   .catch((error) => {
     console.error('log in failed!');
