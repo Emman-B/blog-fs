@@ -37,16 +37,36 @@ async function selectOneBlogPost(blogpostID) {
 /**
  * Retrieves the blog posts from the database
  * @param {object} currentUser the current user for filtering results from the database
+ * @param {number} limit how many blogposts to retrieve (per page)
+ * @param {page} page page offset for blogposts (page 1 = first page)
+ * @param {string} specifiedAuthor author of blogposts to search for
  * @returns the blog posts from the database
  */
-async function selectBlogPosts(currentUser) {
-  // create the query
+async function selectBlogPosts(currentUser, limit, page, specifiedAuthor) {
+  // create part of query that involves handling selecting by author
+  //  (the AND is needed since this will be prepended before the permission query)
+  const authorQuery = specifiedAuthor?`author = $2 AND `:`( $2 = NULL OR TRUE ) AND `;
+
+  // create the part of the query that involves permission-handling
+  const permissionQuery = `( permissions LIKE 'public'` +
+  ` OR ($1 LIKE '%' AND permissions LIKE 'users')` + // detects if a username was provided
+  ` OR (author = $1 AND (permissions SIMILAR TO 'drafts|unlisted|private')) )`;
+
+  // create the full query
   const query = {
-    text: `SELECT * FROM blogposts WHERE permissions LIKE 'public'` +
-      ` OR ($1 LIKE '%' AND permissions LIKE 'users')` + // Ideally, detects if a username was provided
-      ` OR (author = $1 AND (permissions SIMILAR TO 'drafts|unlisted|private'));`,
-    values: [ currentUser?.username ],
+    text: `SELECT * FROM blogposts WHERE ` +
+      authorQuery + // for selecting posts with specified author
+      permissionQuery + // for handling permissions
+      ` ORDER BY updateddate DESC`,
+    values: [ currentUser?.username, specifiedAuthor ],
   };
+
+  // add a limit and page offset if provided
+  if (limit > 0 && page > 0) {
+      query.text += ` LIMIT $4 OFFSET $5;`;
+      query.values.push(limit);
+      query.values.push( (page - 1) * limit); // first page = 1
+  }
 
   try {
     // make the database query and return the data

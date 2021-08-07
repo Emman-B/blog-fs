@@ -92,7 +92,7 @@ exports.getBlogPost = async (req, res) => {
  */
 exports.getBlogPosts = async (req, res) => {
   // get the blogposts from the database
-  const blogPosts_ = await db.selectBlogPosts(req.user);
+  const blogPosts_ = await db.selectBlogPosts(req.user, req.query.limit, req.query.page, req.query.author);
 
   // sort by date before providing the blogposts
   blogPosts_.sort((postA, postB) => {
@@ -101,6 +101,10 @@ exports.getBlogPosts = async (req, res) => {
 
   // send the dummy data
   res.json(blogPosts_);
+};
+
+exports.getBlogPostsByAuthor = async (req, res) => {
+  // get the blogposts from the database
 };
 
 /**
