@@ -65,8 +65,8 @@ function PostBrief(props) {
   // component return function
   return (
     <article className={'post ' + appendClassForPermissions()} onClick={handleClick}>
-      {/* Title is wrapped in pre tags to prevent collapsing whitespace */}
-      <pre><h1 className='post-title'>{postTitle}</h1></pre>
+      {/* Post-title class will use white-space: pre-line to preserve whitespace */}
+      <h1 className='post-title'>{postTitle}</h1>
       <h4 className={'post-author-bar'}>{postAuthor}, {postDate}, {postPermissions}</h4>
       {/* Display the content (sanitize just in case) */}
       <div className='post-content'>

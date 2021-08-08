@@ -48,7 +48,6 @@ function PostBriefList(props) {
               postPermissions={blogPost.permissions}
               // this will be the full content, including HTML. PostBrief will handle sanitizing it and getting its text content.
               postContent={blogPost.content} />
-            <Divider />
           </React.Fragment>
         );
       })}

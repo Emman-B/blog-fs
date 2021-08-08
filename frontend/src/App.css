@@ -13,3 +13,18 @@ pre.ql-syntax, code {
     width: fit-content;
     color: hsl(0, 0%, 95%);
 }
+
+button {
+    background-color: hsl(0, 0%, 25%);
+    color: white;
+    border: none;
+    padding: 0.5vh 2vw;
+    border-radius: 5px;
+}
+button:hover {
+    background-color: hsl(0, 0%, 50%);
+}
+
+button:active {
+    background-color: hsl(0, 0%, 70%);
+}
