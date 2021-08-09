@@ -2,14 +2,23 @@
 #navbar {
     display: flex;
     flex-direction: row;
-    padding: 5px;
+    padding: 3%;
     justify-content: space-between;
     align-items: baseline;
-    height: 30px;
+    height: 2em;
 
-    background-color: black;
     color:white;
+    background-color: hsl(200, 100%, 40%);
+    position: fixed;
+    top: 0;
+    width: 94%;
+}
 
+@media only screen and (min-width: 801px) {
+    #navbar {
+        padding: 0.5%;
+        width: 99%;
+    }
 }
 
 .navbar-item {
@@ -37,6 +46,21 @@
 
 button.navbar-item {
     align-self: stretch;
+    border-radius: 0;
+    margin: 0em;
+    padding: 1.5em 3em;
+    border: 0.1em solid;
+    border-color: hsl(200, 100%, 50%);
+    background-color: hsl(200, 100%, 95%);
+    color: hsl(200, 100%, 20%);
+}
+
+button.navbar-item:hover {
+    background-color: hsl(200, 100%, 75%);
+}
+
+button.navbar-item:active {
+    background-color: hsl(200, 100%, 85%);
 }
 
 #navbar-title {

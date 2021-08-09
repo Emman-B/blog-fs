@@ -100,8 +100,8 @@ export default function PostReader(props) {
    * @returns JSX 
    */
   const readerComponent = (blogPost) => (
-    <>
-      <pre><h1>{blogPost.title}</h1></pre>
+    <div className={'postreader'}>
+      <h1>{blogPost.title}</h1>
       <h4>{blogPost.author}</h4>
       <h5>{blogPost.publishdate}</h5>
       <h5>{blogPost.updateddate}</h5>
@@ -112,7 +112,7 @@ export default function PostReader(props) {
 
       {/* Make sure to include the ql-snow and ql-editor classes for styling */}
       <pre className='post-reader-content ql-snow ql-editor' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(blogPost.content)}}></pre>
-    </>
+    </div>
   );
 
   // PostReader load failure component function

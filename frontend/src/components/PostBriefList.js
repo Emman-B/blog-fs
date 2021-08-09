@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useState, useEffect } from "react";
 
 import PostBrief from '../components/PostBrief';
-import Divider from './Divider';
 
 /**
  * Retrieves the blog psots using the API

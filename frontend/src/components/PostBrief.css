@@ -3,7 +3,7 @@
     border-radius: 15px;
     margin: 15px;
     padding: 10px;
-    box-shadow: 10px 10px 10px hsl(0, 0%, 50%);
+    box-shadow: 0em 0.5em 0.5em hsl(0, 0%, 50%);
 }
 
 .post-title {

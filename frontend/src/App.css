@@ -4,6 +4,7 @@
 
 body {
     margin: 0;
+    margin-top: 4em;
 }
 
 /* These are for code blocks (depends on react-quill and how it writes code blocks) */
@@ -15,16 +16,17 @@ pre.ql-syntax, code {
 }
 
 button {
-    background-color: hsl(0, 0%, 25%);
+    background-color: hsl(200, 100%, 50%);
     color: white;
     border: none;
     padding: 0.5vh 2vw;
     border-radius: 5px;
 }
+
 button:hover {
-    background-color: hsl(0, 0%, 50%);
+    background-color: hsl(200, 100%, 60%);
 }
 
 button:active {
-    background-color: hsl(0, 0%, 70%);
+    background-color: hsl(200, 100%, 70%);
 }

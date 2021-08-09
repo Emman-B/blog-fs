@@ -1,3 +1,7 @@
+.postreader h1 {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
 .post-reader-content blockquote {
     background-color: hsl(0, 0%, 95%);
     width: fit-content;

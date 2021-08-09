@@ -8,12 +8,14 @@
 /* This is the button for toggling the collapse element */
 .collapse-button {
     width: fit-content;
+    padding: 0.5em 2em;
 }
 
 /* This is the div that is being animated by react-spring */
 .collapse-animated-div {
     width: fit-content;
     overflow: hidden;
+    margin-top: 0.5em;
 }
 
 /* This is the content being shown/hidden */
