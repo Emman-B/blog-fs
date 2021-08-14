@@ -53,6 +53,7 @@ button.navbar-item {
     border-color: hsl(200, 100%, 50%);
     background-color: hsl(200, 100%, 95%);
     color: hsl(200, 100%, 20%);
+    font-size: medium;
 }
 
 button.navbar-item:hover {

@@ -43,6 +43,7 @@ function PostBriefList(props) {
               postID={blogPost.id}
               postAuthor={blogPost.author}
               postDate={new Date(blogPost.updateddate).toLocaleString()}
+              postDates={{publish: blogPost.publishdate, updated: blogPost.updateddate}}
               postTitle={blogPost.title}
               postPermissions={blogPost.permissions}
               // this will be the full content, including HTML. PostBrief will handle sanitizing it and getting its text content.

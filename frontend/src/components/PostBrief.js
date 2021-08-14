@@ -2,6 +2,7 @@ import './PostBrief.css';
 import { useState } from "react";
 import { useHistory } from 'react-router';
 import DOMPurify from 'dompurify';
+import prettydate from 'pretty-date';
 
 /**
  * Provides a brief summary to a post
@@ -15,6 +16,7 @@ function PostBrief(props) {
   const [postTitle  /*, setPostTitle*/]   = useState((props.postTitle !== undefined)?props.postTitle:'Untitled');
   const [postAuthor /*, setPostAuthor*/]  = useState((props.postAuthor !== undefined)?props.postAuthor:'Anonymous');
   const [postDate   /*, setPostDate*/]    = useState((props.postDate !== undefined)?props.postDate:new Date().toLocaleDateString());
+  const [postDates   /*, setPostDates*/]    = useState((props.postDates !== undefined)?props.postDates:{publish: new Date(), updated: new Date()});
   const [postPermissions/* setPostPermissions*/] = useState((props.postPermissions !== undefined)?props.postPermissions:'public');
   const [postContent/*, setPostContent*/] = useState((props.postContent !== undefined)?props.postContent:
     `PLACEHOLDER Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -24,6 +26,17 @@ function PostBrief(props) {
 
   // react router dom history hook for use in handling clicks
   const history = useHistory();
+
+  /**
+   * Makes a prettier date, also checks if the blog post wasn't
+   * updated.
+   */
+  const makeDate = () => {
+    if (postDates.publish === postDates.updated) {
+      return "Published " + prettydate.format(new Date(postDate));
+    }
+    return "Updated " + prettydate.format(new Date(postDate));
+  }
 
   /**
    * Takes content with HTML tags and retrieves just the inner text
@@ -67,7 +80,7 @@ function PostBrief(props) {
     <article className={'post ' + appendClassForPermissions()} onClick={handleClick}>
       {/* Post-title class will use white-space: pre-line to preserve whitespace */}
       <h1 className='post-title'>{postTitle}</h1>
-      <h4 className={'post-author-bar'}>{postAuthor}, {postDate}, {postPermissions}</h4>
+      <h4 className={'post-author-bar'} title={postDate}>{postAuthor}, {makeDate()}, {postPermissions}</h4>
       {/* Display the content (sanitize just in case) */}
       <div className='post-content'>
         {DOMPurify.sanitize(getTextContent(postContent))}
