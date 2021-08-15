@@ -2,6 +2,12 @@
     white-space: pre-wrap;
     overflow-wrap: break-word;
 }
+
+.postreader {
+    padding: 1em;
+    padding-top: 0.25em;
+}
+
 .post-reader-content blockquote {
     background-color: hsl(0, 0%, 95%);
     width: fit-content;

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
 import { useHistory } from 'react-router-dom';
+import prettydate from 'pretty-date';
 
 /**
  * Makes a GET request to retrieve a specified blog post
@@ -93,6 +94,30 @@ export default function PostReader(props) {
     <div>Loading</div>
   );
 
+  // PostReader date showing
+  const showDates = () => {
+    const publishDateComponent =
+        <h5 title={new Date(blogPost.publishdate).toLocaleString()}>
+          {"Published " + prettydate.format(new Date(blogPost.publishdate))}
+        </h5>;
+    const updatedDateComponent =
+        <h5 title={new Date(blogPost.updateddate).toLocaleString()}>
+          {"Updated " + prettydate.format(new Date(blogPost.updateddate))}
+        </h5>;
+
+
+    if (blogPost.publishdate === blogPost.updateddate) {
+      return publishDateComponent;
+    } else {
+      return (
+        <div>
+          {publishDateComponent}
+          {updatedDateComponent}
+        </div>
+      );
+    }
+  };
+
   // PostReader load success component function
   /**
    * takes the blog post and its properties and turns it into JSX
@@ -103,8 +128,7 @@ export default function PostReader(props) {
     <div className={'postreader'}>
       <h1>{blogPost.title}</h1>
       <h4>{blogPost.author}</h4>
-      <h5>{blogPost.publishdate}</h5>
-      <h5>{blogPost.updateddate}</h5>
+      {showDates()}
       <div>{blogPost.permissions}</div>
       {/* Extra author controls */}
       {(blogPost.author === user?.username)?<button onClick={handleEditPost}>Edit Post</button>:<></>}
