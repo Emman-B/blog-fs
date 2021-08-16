@@ -3,10 +3,10 @@
  * React Router documentation linked here: https://reactrouter.com/web/example/auth-workflow 
  */
 import { Route, Redirect } from 'react-router-dom';
-import { useAuthState } from './Authentication';
+import { useAuth } from './Authentication';
 
 /**
- * This is a protected route object that can make use of the useAuthState() hook
+ * This is a protected route object that can make use of the useAuth() hook
  * that I implemented which verifies if the user is logged in. It wraps the
  * react-router-dom's existing Route but with authentication.
  * @param {object} routeProps Properties to pass onto the underlying Route component
@@ -22,7 +22,7 @@ export default function ProtectedRoute({redirectPathOnFail = '/', reversedProtec
   loadingComponent = loadingComponent ?? <></>;
 
   // get the logged in state
-  const isLoggedIn = useAuthState();
+  const isLoggedIn = useAuth();
 
   // component return function
   return(

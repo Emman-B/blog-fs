@@ -1,6 +1,6 @@
 import './NavigationBar.css';
 import { useHistory } from 'react-router-dom';
-import { doLogout, useAuthState  } from '../authentication/Authentication';
+import { doLogout, useAuth  } from '../authentication/Authentication';
 import Collapse from './Collapse';
 
 /**
@@ -10,7 +10,7 @@ import Collapse from './Collapse';
  */
 function NavigationBar(props) {
   // custom hook to check login state
-  const isLoggedIn = useAuthState();
+  const isLoggedIn = useAuth();
 
   // use the react router history hook
   const history = useHistory();

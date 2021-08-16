@@ -2,9 +2,13 @@
  * This source file contains exported functions that revolve around authentication,
  * such as whether a user is logged in, or if a login request was made.
  */
+// Some authentication-related code (regarding authenticated routes) was inspired from this link:
+// https://reactrouter.com/web/example/auth-workflow
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
+const AuthenticationContext = createContext();
 
 /**
  * checks if the user is logged in, and if so, stored their info in local storage
@@ -33,13 +37,17 @@ export async function checkLoginState() {
 }
 
 /**
- * Hook to track authentication state. Use this whenever you need to render something
- * that depends on whether the user is logged in or not (i.e., Log In button vs Log Out button)
+ * Tracks authentication state. This is used in AuthenticationProvider to pass down the
+ * authentication state via contexts.
  * @returns boolean|null (boolean is result of whether user is logged in or not, null means that the result was not found yet)
  */
-export function useAuthState() {
+function useAuthState() {
   // tracks login state (null means the user was not logged in)
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  // react-router-dom: used to check authentication whenever the route changes. It's because
+  //  ... this location has state, thus calling the checkLoginState function.
+  const location = useLocation();
 
   // update login state
   useEffect(() => {
@@ -52,10 +60,32 @@ export function useAuthState() {
       setIsLoggedIn(false);
       console.error(error);
     });
-  });
+  }, [location]);
 
   // return the boolean
   return isLoggedIn;
+}
+
+/**
+ * Verifies if a user is logged in by checking AuthenticationContext. Use
+ * this when checking what to render. This requires an AuthenticationProvider
+ * so that the authentication state can be provided.
+ * @return authentication state from an AuthenticationProvider
+ */
+export function useAuth() {
+  // gets the value from the AuthenticationContext.Provider
+  return useContext(AuthenticationContext);
+}
+
+/**
+ * Provides the authentication state (from useAuthState) to children elements.
+ * This should wrap elements that need the authentication state (e.g., protected
+ * routes, conditionally rendered components, etc.)
+ * @return Context Provider with rendered children
+ */
+export function AuthenticationProvider({children}) {
+  const authentication = useAuthState();
+  return <AuthenticationContext.Provider value={authentication}>{children}</AuthenticationContext.Provider>
 }
 
 /**
