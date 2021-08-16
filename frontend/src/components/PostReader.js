@@ -81,10 +81,9 @@ export default function PostReader(props) {
         history.push('/');
       })
       .catch((err) => {
-        // on unsuccessful deletion, send an alert and refresh the page
+        // on unsuccessful deletion, send an alert
         window.alert(`There was a problem with deleting the blog post. An error has been logged to the console.`);
         console.error(err);
-        history.go(0);
       });
     }
   };

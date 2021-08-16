@@ -1,10 +1,44 @@
-header {
-    display: flex;
-    flex-direction: row;
+form.post-editor {
+    padding: 0.5em;
+}
+
+header.editor-header * {
+    margin: auto;
+}
+
+#newpost-title {
+    text-align: center;
+    margin-bottom: 1em;
 }
 
 button#submit-button {
-    width: 100px;
-    height: 50px;
+    width: 5em;
+    height: 2.5em;
     align-self: center;
+    margin-left: 2em;
+}
+
+div.editor-controls {
+    /* Grid stuff */
+    display: grid;
+    grid-template-columns: auto auto;
+
+
+    background-color: hsl(200, 100%, 85%);
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    margin: 0.25em;
+}
+
+div.editor-controls input {
+    /* Grid item */
+    grid-column: 1 / span 2;
+
+    padding: 0.5em;
+    width: 75%;
+    border: none;
+    border-bottom: 2px solid;
+    outline: none;
+    background-color: inherit;
+    margin-bottom: 1em;
 }

@@ -19,7 +19,7 @@ button {
     background-color: hsl(200, 100%, 50%);
     color: white;
     border: none;
-    padding: 0.5vh 2vw;
+    padding: 0.5em 1em;
     border-radius: 5px;
 }
 

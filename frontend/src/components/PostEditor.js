@@ -79,6 +79,8 @@ export default function PostEditor(props) {
   const [postTitle, setPostTitle] = useState(props.postData?.title);
   // content of the post (set in the react quill editor)
   const [postContent, setPostContent] = useState(props.postData?.content);
+  // describes the selected permission
+  const [permissionDescription, setPermissionDescription] = useState('Permissions of your blog post.');
 
   // reference for the permissions
   const permissionsRef = useRef('public');
@@ -103,6 +105,29 @@ export default function PostEditor(props) {
       // create a new blogpost
       postNewBlogPost(postTitle, permissionsRef.current.value, DOMPurify.sanitize(postContent), history);
     };
+  }
+
+  const describeCurrentPermission = () => {
+    switch (permissionsRef.current.value) {
+      case 'public':
+        setPermissionDescription('Anyone can view this blog post, regardless of if they are logged in.'
+          + ' This blog post can also be seen posted on the home page.');
+        break;
+      case 'users':
+        setPermissionDescription('Only logged-in users can view this blog post.'
+          + ' This blog post can also be seen posted on the home page.');
+        break;
+      case 'unlisted':
+        setPermissionDescription('Anyone can view this blog post with a link, regardless of if they are logged in.'
+          + ' Only you can see it on the home page. Other users will need a link to view it.');
+        break;
+      case 'private':
+        setPermissionDescription('Only you can see this blog post. Only you will see it on the home page.');
+        break;
+      default:
+        setPermissionDescription('Permissions of your blog post.');
+        break;
+    }
   }
 
 
@@ -143,11 +168,22 @@ export default function PostEditor(props) {
   // component return function
   return(
     // On any input in the form, set the dirty flag to true
-    <form onInput={() => setIsDirty(true)}>
-      <header>
+    <form onInput={() => setIsDirty(true)} className={'post-editor'}>
+      <header className='editor-header'>
         <h4 id='newpost-title'>New Post</h4>
-        <div>
-          <select ref={permissionsRef} defaultValue={props.postData?.permissions}>
+        <div className={'editor-controls'}>
+          {/* Post Title Input */}
+          <input 
+            type='text'
+            placeholder='Post Title'
+            // When any change occurs, save it into local storage
+            onChange={(event) => setPostTitle(event.target.value)}
+            defaultValue={postTitle}
+          />
+          <select ref={permissionsRef}
+              defaultValue={props.postData?.permissions}
+              title={permissionDescription}
+              onChange={describeCurrentPermission}>
             <option value='public'>Public</option>
             <option value='users'>Users</option>
             <option value='unlisted'>Unlisted</option>
@@ -162,14 +198,7 @@ export default function PostEditor(props) {
         </div>
       </header>
 
-      {/* Post Title Input */}
-      <input 
-        type='text'
-        placeholder='Post Title'
-        // When any change occurs, save it into local storage
-        onChange={(event) => setPostTitle(event.target.value)}
-        defaultValue={postTitle}
-      />
+      
       {/* Post Content Editor */}
       <ReactQuill 
         modules={{toolbar: toolbarOptions}}

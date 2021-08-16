@@ -22,10 +22,10 @@ function NavigationBar(props) {
   // if user is logged out, show this
   const NavbarRightLoggedOut = (
     <Collapse>
-      <button id='navbar-login' className='navbar-item' onClick={() => {
+      <button id='navbar-login' tabIndex={-1} className='navbar-item' onClick={() => {
         history.push('/login');
       }}>Login</button>
-      <button id='navbar-signup' className='navbar-item' onClick={() => {
+      <button id='navbar-signup' tabIndex={-1} className='navbar-item' onClick={() => {
         history.push('/signup');
       }}>Sign Up</button>
     </Collapse>

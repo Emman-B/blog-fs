@@ -94,6 +94,9 @@ export function AuthenticationProvider({children}) {
  */
 export function doLogout(history) {
   axios.delete('http://localhost:3010/v1/user/logout', {withCredentials: true})
+    .catch(() => {
+      // if logging out without being logged in, this will be caught here
+    })
     .finally(() => {
       // log out can either succeed or fail (failing mainly due to the user is already logged out).
       // regardless, removing the information from local storage and refreshing the current page

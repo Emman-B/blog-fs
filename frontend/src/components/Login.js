@@ -18,7 +18,6 @@ function postLoginDetails(emailOrUsernameRef, passwordRef, history) {
     localStorage.setItem('username', response.data.username);
     // return the user back to the home route
     history.push('/');
-    history.go(0);
   })
   .catch((error) => {
     console.error('log in failed!');
@@ -50,17 +49,17 @@ function Login(props) {
       {/* Email or Username Input */}
       <div>
         <div>Email or Username</div>
-        <input type='text' ref={emailOrUsernameRef}></input>
+        <input type='text' ref={emailOrUsernameRef} tabIndex={0}></input>
       </div>
 
       {/* Password Input */}
       <div>
         <div>Password</div>
-        <input type='password' ref={passwordRef}></input>
+        <input type='password' ref={passwordRef} tabIndex={0}></input>
       </div>
 
       {/* Login Button */}
-      <button type='submit' onClick={() => { postLoginDetails(emailOrUsernameRef, passwordRef, history) }}>Log in</button>
+      <button tabIndex={0} type='submit' onClick={() => { postLoginDetails(emailOrUsernameRef, passwordRef, history) }}>Log in</button>
     </form>
   );
 }
