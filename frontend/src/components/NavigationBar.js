@@ -59,7 +59,7 @@ function NavigationBar(props) {
   return (
     <div id='navbar'>
       <div id='navbar-left'>
-        <div id='navbar-title' className='navbar-item'>blog-fs</div>
+        <div id='navbar-title' className='navbar-item' onClick={() => history.push('/')}>blog-fs</div>
 
         {/* Search bar (commented out until needed) */}
         {/* <input id='navbar-search' className='navbar-item' type='text' placeholder='Search...'></input> */}

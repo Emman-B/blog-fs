@@ -1,0 +1,33 @@
+
+
+form.login-signup {
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+}
+
+.login-signup > * {
+    margin: 3%;
+}
+
+.login-signup header {
+    font-weight: bold;
+    font-size: large;
+    padding-bottom: 2%;
+}
+
+.login-signup > button {
+    padding: 1em;
+}
+
+.login-signup input {
+    padding: 0.5em;
+    width: 75%;
+    border: none;
+    border-bottom: 2px solid;
+}
+
+.login-signup input:focus {
+    outline: none;
+    border-bottom: 2px solid hsl(200, 100%, 40%);
+}

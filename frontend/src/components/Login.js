@@ -1,3 +1,4 @@
+import './LoginSignup.css'; // styles
 import axios from 'axios';
 import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -41,21 +42,21 @@ function Login(props) {
 
   // component return function
   return (
-    <form>
-      <div>
+    <form className={'login login-signup'}>
+      <header>
         Login
-      </div>
+      </header>
 
       {/* Email or Username Input */}
       <div>
         <div>Email or Username</div>
-        <input type='text' placeholder='Email or Username' ref={emailOrUsernameRef}></input>
+        <input type='text' ref={emailOrUsernameRef}></input>
       </div>
 
       {/* Password Input */}
       <div>
         <div>Password</div>
-        <input type='password' placeholder='Password' ref={passwordRef}></input>
+        <input type='password' ref={passwordRef}></input>
       </div>
 
       {/* Login Button */}

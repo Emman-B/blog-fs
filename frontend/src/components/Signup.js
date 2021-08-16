@@ -1,3 +1,4 @@
+import './LoginSignup.css'; // styles
 import { useRef } from "react";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -38,7 +39,7 @@ function Signup() {
 
   // component return function
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={'signup login-signup'}>
       <header>
         Create an Account
       </header>
@@ -46,25 +47,25 @@ function Signup() {
       {/* Username Input */}
       <div>
         <div>Username (3-64 characters)</div>
-        <input type='text' placeholder='Username' ref={usernameRef} minLength={3} maxLength={64} required></input>
+        <input type='text' ref={usernameRef} minLength={3} maxLength={64} required></input>
       </div>
 
       {/* Email Input */}
       <div>
         <div>Email</div>
-        <input type='email' placeholder='Email' ref={emailRef} required></input>
+        <input type='email' ref={emailRef} required></input>
       </div>
 
       {/* Password Input */}
       <div>
         <div>Password (8-64 characters)</div>
-        <input type='password' placeholder='Password' ref={passwordRef} minLength={8} maxLength={64} required></input>
+        <input type='password' ref={passwordRef} minLength={8} maxLength={64} required></input>
       </div>
 
       {/* Confirm Password Input */}
       <div>
         <div>Confirm Password</div>
-        <input type='password' placeholder='Password' ref={confirmPasswordRef} minLength={8} maxLength={64} required></input>
+        <input type='password' ref={confirmPasswordRef} minLength={8} maxLength={64} required></input>
       </div>
 
       {/* Account Signup Button */}

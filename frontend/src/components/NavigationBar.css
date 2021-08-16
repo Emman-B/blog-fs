@@ -66,9 +66,15 @@ button.navbar-item:active {
 }
 
 #navbar-title {
-    padding-right: 2vw;
-    padding-left: 1vw;
-    cursor: default;
+    padding: 0em 1em;
+    cursor: pointer;
+    border-radius: 0.5em;
+
+    transition: background-color 0.1s ease-in;
+}
+
+#navbar-title:hover {
+    background-color: hsl(200, 100%, 45%);
 }
 
 #navbar-search {
