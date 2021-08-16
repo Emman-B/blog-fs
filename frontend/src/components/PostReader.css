@@ -17,3 +17,8 @@
     padding-left: 2em;
     border-left: 0.25em solid hsl(0, 0%, 75%);
 }
+
+.post-reader-authorcontrols > button {
+    margin-top: 0.5em;
+    margin-right: 0.5em;
+}

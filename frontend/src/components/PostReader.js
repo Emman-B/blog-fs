@@ -131,8 +131,10 @@ export default function PostReader(props) {
       {showDates()}
       <div>{blogPost.permissions}</div>
       {/* Extra author controls */}
-      {(blogPost.author === user?.username)?<button onClick={handleEditPost}>Edit Post</button>:<></>}
-      {(blogPost.author === user?.username)?<button onClick={handleDeletePost}>Delete Post</button>:<></>}
+      <div className='post-reader-authorcontrols'>
+        {(blogPost.author === user?.username)?<button onClick={handleEditPost}>Edit Post</button>:<></>}
+        {(blogPost.author === user?.username)?<button onClick={handleDeletePost}>Delete Post</button>:<></>}
+      </div>
 
       {/* Make sure to include the ql-snow and ql-editor classes for styling */}
       <pre className='post-reader-content ql-snow ql-editor' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(blogPost.content)}}></pre>
