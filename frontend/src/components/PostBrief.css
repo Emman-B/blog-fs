@@ -6,6 +6,13 @@
     box-shadow: 0em 0.5em 0.5em hsl(0, 0%, 50%);
 }
 
+@media only screen and (min-width: 801px) {
+    /* Desktop view */
+    .post {
+        margin: 2em 20%;
+    }
+}
+
 .post-title {
     background-color: hsl(200, 75%, 85%);
     padding: 5px;

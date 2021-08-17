@@ -2,7 +2,7 @@
 #navbar {
     display: flex;
     flex-direction: row;
-    padding: 3%;
+    padding: 15px 3%;
     justify-content: space-between;
     align-items: baseline;
     height: 2em;

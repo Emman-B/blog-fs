@@ -8,6 +8,18 @@
     padding-top: 0.25em;
 }
 
+.post-reader-content {
+    line-height: 2;
+}
+
+.post-reader-content pre.ql-syntax {
+    white-space: pre-wrap;
+    padding: 5px;
+}
+.post-reader-content code {
+    padding: 0 5px;
+}
+
 .post-reader-content blockquote {
     background-color: hsl(0, 0%, 95%);
     width: fit-content;
@@ -21,4 +33,11 @@
 .post-reader-authorcontrols > button {
     margin-top: 0.5em;
     margin-right: 0.5em;
+}
+
+@media only screen and (min-width: 801px) {
+    /* Desktop View */
+    .postreader {
+        margin: 2em 20%;
+    }
 }

@@ -42,3 +42,10 @@ div.editor-controls input {
     background-color: inherit;
     margin-bottom: 1em;
 }
+
+@media only screen and (min-width: 801px) {
+    form.post-editor {
+        margin: auto;
+        width: 50%;
+    }
+}

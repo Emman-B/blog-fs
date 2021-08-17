@@ -31,3 +31,15 @@ form.login-signup {
     outline: none;
     border-bottom: 2px solid hsl(200, 100%, 40%);
 }
+
+@media only screen and (min-width: 801px) {
+    .login-signup {
+        box-shadow: 0 5px 5px grey;
+        width: 400px;
+        margin: auto;
+        border-radius: 5em;
+    }
+    .login-signup > * {
+        margin: 1em 20%;
+    }
+}
