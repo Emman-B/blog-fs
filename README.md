@@ -1,6 +1,6 @@
 # Blog Full-Stack Web App
 
-This is a full-stack blogging web application using the PERN stack (PostgreSQL, Express.js, React, Node.js).
+This is a full-stack blogging web application using the PERN stack (PostgreSQL, Express.js, React, Node.js). I have also converted this project to use MongoDB instead of PostgreSQL. You can find it here: https://github.com/Emman-B/blog-fs-mern.
 
 ![main_view_mobile](https://user-images.githubusercontent.com/34151856/129804477-212523f3-1606-451c-b4b2-42ae2f82b8e3.png)
 
